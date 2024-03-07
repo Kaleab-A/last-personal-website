@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import "./style.css";
 import { useEffect, useState, useRef } from "react";
 
@@ -7,6 +6,7 @@ const Page = (props: {
 	totalPages: number;
 	value: number;
 	handlePageClick: (page: number) => void;
+	children: React.ReactNode;
 }) => {
 	// Set z-index and margin of the page to be the order of the page
 	const [zIndex, setZIndex] = useState(props.order);
@@ -39,9 +39,11 @@ const Page = (props: {
 			}}
 			ref={pageDiv}
 		>
-			<h1>
+			{/* <h1>
 				Page {props.value} Order {props.order}
-			</h1>
+			</h1> */}
+
+			{props.children}
 		</div>
 	);
 };

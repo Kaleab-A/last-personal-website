@@ -1,4 +1,10 @@
 {
+  "FrontPage": {
+    "Title": "INTRO",
+    "Image": "me_sketch.png",
+    "Text": "Hey! It's Kaleab.",
+    "Message": "Play music below to set the mood while you stalk me."
+  },
   "Intro" : {
     "Full Name": "Kaleab Asfaw Azezew",
     "First Name": "Kaleab",
@@ -8,6 +14,6 @@
 
   },
   "Fun Projects!!": {
-    
+
   }
 }

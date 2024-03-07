@@ -11,9 +11,8 @@ body{
 
 .page{
     border: 1px solid black;
-    color: red;
     position: absolute;
-    width: 70%;
+    width: 60%;
     height: 70%;
     background-color: white;
     opacity: 0.9;
@@ -30,7 +29,6 @@ body{
 
 .musica{
     border: 1px solid black;
-    color: red;
     position: absolute;
     width: 85%;
     height: 40px;
@@ -39,6 +37,10 @@ body{
     bottom: 2%;
     left: 50%;
     transform: translate(-50%, 0%);
+
+    /* Allign items to right */
+    display: flex;
+    justify-content: flex-end;
 
     transition: all 1s;
 }
