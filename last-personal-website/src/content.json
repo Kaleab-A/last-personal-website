@@ -23,14 +23,16 @@
         "Description": "This is a project that I worked on. It was a fun project. I learned a lot from it. I hope you like it.",
         "Skills": ["React", "Node.js", "Express.js", "MongoDB", "RESTful APIs", "Microservices"],
         "Github": "github.com/kaleabazer",
-        "Demo": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        "Demo": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "default": true
       },
       {
         "Title": "Project 2",
         "Description": "This is a project that I worked on. It was a fun project. I learned a lot from it. I hope you like it.",
         "Skills": ["React", "AI", "Nueral Networks", "Machine Learning", "Data Science"],
         "Github": "github.com/kaleabazer",
-        "Demo": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        "Demo": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "default" : false
       }
     ]
   }

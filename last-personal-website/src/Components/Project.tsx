@@ -7,6 +7,7 @@ type ProjectProps = {
 		Skills: string[];
 		Github: string;
 		Demo: string;
+		default: boolean;
 	};
 };
 

@@ -1,18 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { CSSProperties } from "react";
 
 // Each Tag component
-const Tag = (props: { tag: string; selected: boolean }) => {
+const Tag = (props: {
+	tag: string;
+	selected: boolean;
+	handleTagClick: (tag: string) => void;
+}) => {
 	const [selected, setSelected] = React.useState(props.selected);
-
-	useEffect(() => {
-		const handleClick = () => {
-			console.log("clicked");
-			setSelected(!selected);
-		};
-
-		document.getElementById(props.tag)?.addEventListener("click", handleClick);
-	}, [selected]);
 
 	// Styling
 	const tagStyle: CSSProperties = {
@@ -23,7 +18,15 @@ const Tag = (props: { tag: string; selected: boolean }) => {
 	};
 
 	return (
-		<div className="container" id={props.tag} style={tagStyle}>
+		<div
+			className="container"
+			id={props.tag}
+			style={tagStyle}
+			onClick={() => {
+				setSelected(!selected);
+				props.handleTagClick(props.tag);
+			}}
+		>
 			<p>{props.tag}</p>
 		</div>
 	);
