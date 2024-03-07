@@ -1,15 +1,9 @@
 import { CSSProperties } from "react";
 import content from "../content.json";
+import "./style.css";
 
 const FrontPage = () => {
 	// Styling
-	const containerStyle: CSSProperties = {
-		display: "flex",
-		flexDirection: "column",
-		alignItems: "center",
-		justifyContent: "center",
-	};
-
 	const imgStyle: CSSProperties = {
 		width: "22%",
 		marginTop: "30px",
@@ -27,7 +21,7 @@ const FrontPage = () => {
 	};
 
 	return (
-		<div style={containerStyle}>
+		<div className="container">
 			<h2>{content.FrontPage.Title}</h2>
 			<h1 style={h1Style}>{content.FrontPage.Text}</h1>
 			<img

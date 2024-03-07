@@ -5,7 +5,8 @@
     "Text": "Hey! It's Kaleab.",
     "Message": "Play music below to set the mood while you stalk me."
   },
-  "Intro" : {
+  "AboutMe" : {
+    "Titile": "ABOUT ME",
     "Full Name": "Kaleab Asfaw Azezew",
     "First Name": "Kaleab",
     "About Me": "I am a software engineer with a passion for building scalable and maintainable software. I have experience in building web applications using modern technologies such as React, Node.js, and Express.js. I am also experienced in building RESTful APIs and microservices. I am a quick learner and I am always eager to learn new technologies and tools. I am also a team player and I am always willing to help my teammates. I am also a good communicator and I am always willing to share my knowledge with others. I am also a good problem solver and I am always willing to take on new challenges. I am also a good leader and I am always willing to take on new responsibilities. I am also a good mentor and I am always willing to help others grow. I am also a good listener and I am always willing to listen to others. I am also a good learner and I am always willing to learn new things. I am also a good teacher and I am always willing to teach others. I am also a good friend. I am also a good person. I am also a good human being. I am also a good citizen. I am also a good member of society. I am also a good member of the world. I am also a good member of the universe. I am also a good member of the cosmos. I am also a good member of the multiverse. I am also a good member of the omniverse. I am also a good member of the metaverse. I am also a good member of the megaverse. I am also a good member of the gigaverse. I am also a good member of the teraverse. I am also a good member of the petaverse. I am also a good member of the exaverse. I am also a good member of the zettaverse. I am also a good member of the yottaverse. I am also a good member of the xennaverse. I am also a good member of the weyrverse. I am also a good member of the wyrmverse. I am also a good member of the voidverse. I am also a good member of the ultraverse. I am also a good member of the transverse. I am also a good member of the subverse. I am also a good member of the superverse. I am also a good member of the hyperverse. I am also a good member of the multiverse. I am also a good member of the omniverse. I am also a good member of the metaverse. I am also a good member of the megaverse. I am also a good member of the gigaverse. I am also a good member of the teraverse. I am also a good member of the petaverse. I am also a good member of the exaverse. I am also a good member of the zettaverse. I am also a good member of the yottaverse. I am also a good member of the xennaverse. I am also a good member of the weyrverse. I am also a good member of the wyrmverse. I am also a good member of the voidverse. I am also a good member of the ultraverse. I am also a good member of the transverse. I am also a good member of the subverse. I am also a good member of the superverse. I am also a good member of the hyperverse. I am also a good member of the multiverse."
@@ -14,6 +15,23 @@
 
   },
   "Fun Projects!!": {
-
+    "Title": "FUN PROJECTS!!",
+    "Subtitle": "Select one or more skills to filter",
+    "Projects": [
+      {
+        "Title": "Project 1",
+        "Description": "This is a project that I worked on. It was a fun project. I learned a lot from it. I hope you like it.",
+        "Skills": ["React", "Node.js", "Express.js", "MongoDB", "RESTful APIs", "Microservices"],
+        "Github": "github.com/kaleabazer",
+        "Demo": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      },
+      {
+        "Title": "Project 2",
+        "Description": "This is a project that I worked on. It was a fun project. I learned a lot from it. I hope you like it.",
+        "Skills": ["React", "AI", "Nueral Networks", "Machine Learning", "Data Science"],
+        "Github": "github.com/kaleabazer",
+        "Demo": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      }
+    ]
   }
 }

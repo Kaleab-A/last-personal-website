@@ -44,3 +44,12 @@ body{
 
     transition: all 1s;
 }
+
+
+/* Only for container of each page E.g. FrontPage, AboutMe, Projects ... */
+.container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

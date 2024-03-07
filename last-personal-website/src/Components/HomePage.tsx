@@ -1,11 +1,13 @@
 import Page from "./Page";
 import Musica from "./Musica";
+import AboutMe from "./AboutMe";
+import Projects from "./Projects";
 import { useState } from "react";
 import FrontPage from "./FrontPage";
 
 const HomePage = () => {
 	const totalPages = 4; // UPDATE WHENEVER
-	const pageToRender = [<FrontPage />];
+	const pageToRender = [<FrontPage />, <AboutMe />, <Projects />];
 
 	const [order, setOrder] = useState(Array.from(Array(totalPages).keys()));
 
@@ -23,7 +25,6 @@ const HomePage = () => {
 		newOrder.forEach((value, index) => {
 			if (order[index] < pageOrder) {
 				newOrder[index] = value + 1;
-				console.log("Changed", "index", index, "value", value);
 			} else if (order[index] === pageOrder) {
 				newOrder[index] = 0;
 			}
