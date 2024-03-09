@@ -53,3 +53,39 @@ body{
   align-items: center;
   justify-content: center;
 }
+
+/* ----------------- From Project.tsx ------------------- */
+.projectContainer{
+  border-radius: 10px;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.5s;
+  height: 250px;
+
+  display: flex;
+}
+
+.projectContainer:hover{
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+.projectContainer div{
+  padding: 10px;
+  text-align: justify;
+}
+
+.cardFooter{
+  display: flex;
+  justify-content: flex-start;
+  padding: 0 10px;
+}
+
+  /* Separate each child with | in between */
+.cardFooter a::after{
+  content: "|";
+  padding: 0 5px;
+}
+
+.cardFooter a:last-child::after{
+  content: "";
+}

@@ -24,15 +24,39 @@
         "Skills": ["React", "Node.js", "Express.js", "MongoDB", "RESTful APIs", "Microservices"],
         "Github": "github.com/kaleabazer",
         "Demo": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        "default": true
+        "default": true,
+        "imageURL": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fpin%2F719872940202394%2F&psig=AOvVaw"
+        
       },
       {
-        "Title": "Project 2",
-        "Description": "This is a project that I worked on. It was a fun project. I learned a lot from it. I hope you like it.",
-        "Skills": ["React", "AI", "Nueral Networks", "Machine Learning", "Data Science"],
-        "Github": "github.com/kaleabazer",
-        "Demo": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        "default" : false
+        "Title": "Sock Matching",
+        "Description": "Developed a machine-learning model that can analyze images of 2 socks to determine if they form a pair. The model was trained using TensorFlow and the model was deployed as a RESTful API using Flask. The front-end was built using React. The model was trained using Convolutional Neural Networks",
+        "Skills": ["TensorFlow", "Python", "Flask", "React", "Convolutional Neural Networks", "Machine Learning"],
+        "Github": "https://github.com/Kaleab-A/socks-matching",
+        "Demo": "????????? TODO ??????", 
+        "default" : true,
+        "imageURL": "sockAI-1.jpg"
+
+      },
+      {
+        "Title": "Sock Matching",
+        "Description": "Developed a machine-learning model that can analyze images of 2 socks to determine if they form a pair. The model was trained using TensorFlow and the model was deployed as a RESTful API using Flask. The front-end was built using React. The model was trained using Convolutional Neural Networks",
+        "Skills": ["TensorFlow", "Python", "Flask", "React", "Convolutional Neural Networks", "Machine Learning"],
+        "Github": "https://github.com/Kaleab-A/socks-matching",
+        "Demo": "????????? TODO ??????", 
+        "default" : true,
+        "imageURL": "sockAI-1.jpg"
+
+      },
+      {
+        "Title": "Sock Matching",
+        "Description": "Developed a machine-learning model that can analyze images of 2 socks to determine if they form a pair. The model was trained using TensorFlow and the model was deployed as a RESTful API using Flask. The front-end was built using React. The model was trained using Convolutional Neural Networks",
+        "Skills": ["TensorFlow", "Python", "Flask", "React", "Convolutional Neural Networks", "Machine Learning"],
+        "Github": "https://github.com/Kaleab-A/socks-matching",
+        "Demo": "????????? TODO ??????", 
+        "default" : true,
+        "imageURL": "sockAI-1.jpg"
+
       }
     ]
   }

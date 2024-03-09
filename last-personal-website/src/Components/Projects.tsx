@@ -34,7 +34,7 @@ const Projects = () => {
 	};
 
 	// Styling
-	const projectStyle: CSSProperties = {
+	const projectsStyle: CSSProperties = {
 		display: "flex",
 		justifyContent: "space-around",
 		flexDirection: "row",
@@ -49,7 +49,7 @@ const Projects = () => {
 
 			<Tags tagFreq={tagsDetail} handleTagClick={handleTagClick} />
 
-			<div style={projectStyle}>
+			<div style={projectsStyle}>
 				{content["Fun Projects!!"].Projects.map((project, index) =>
 					project.Skills.some((skill) => tagsDetail[skill]?.selected) ? (
 						<Project key={index} project={project} />
