@@ -1,0 +1,91 @@
+---
+/**
+ * "View without CSS": switches off every stylesheet so the page shows its bare
+ * HTML skeleton, a nod to the bare-bones look. Also on the "\" key. The choice
+ * is remembered, and a plain "restore CSS" link appears at the top.
+ */
+---
+
+<button type="button" class="view-source" data-view-source aria-pressed="false">
+	view without css <kbd>\</kbd>
+</button>
+
+<script>
+	const KEY = 'raw-html';
+	const BANNER = 'raw-html-banner';
+
+	const isRaw = () => {
+		try {
+			return localStorage.getItem(KEY) === '1';
+		} catch {
+			return false;
+		}
+	};
+
+	function render(raw: boolean) {
+		for (const sheet of Array.from(document.styleSheets)) sheet.disabled = raw;
+		document.querySelectorAll('[data-view-source]').forEach((b) => b.setAttribute('aria-pressed', String(raw)));
+		document.getElementById(BANNER)?.remove();
+		if (!raw) return;
+		// Deliberately unstyled: it has to make sense with no CSS at all.
+		const banner = document.createElement('p');
+		banner.id = BANNER;
+		banner.innerHTML =
+			'<strong>CSS is off.</strong> This is the bare HTML underneath the site. ' +
+			'<a href="#" data-restore-css>Restore CSS</a> (or press \\).<hr>';
+		banner.querySelector('a')!.addEventListener('click', (e) => {
+			e.preventDefault();
+			set(false);
+		});
+		document.body.prepend(banner);
+	}
+
+	function set(raw: boolean) {
+		try {
+			if (raw) localStorage.setItem(KEY, '1');
+			else localStorage.removeItem(KEY);
+		} catch {
+			/* still toggle for this page */
+		}
+		render(raw);
+	}
+
+	// Runs on first load and after every client-side navigation (new pages
+	// bring new stylesheets, which need switching off too).
+	document.addEventListener('astro:page-load', () => {
+		render(isRaw());
+		document.querySelectorAll('[data-view-source]').forEach((button) => {
+			button.addEventListener('click', () => set(!isRaw()));
+		});
+	});
+
+	document.addEventListener('keydown', (e) => {
+		if (e.key !== '\\' || e.metaKey || e.ctrlKey || e.altKey) return;
+		if (e.target instanceof HTMLElement && e.target.closest('input, textarea, select, [contenteditable="true"]')) return;
+		e.preventDefault();
+		set(!isRaw());
+	});
+</script>
+
+<style>
+	.view-source {
+		padding: 0;
+		border: 0;
+		background: none;
+		color: inherit;
+		font: inherit;
+		text-decoration: underline;
+		text-decoration-style: dashed;
+		text-underline-offset: 0.18em;
+		cursor: pointer;
+	}
+	.view-source:hover {
+		background: var(--ink);
+		color: var(--paper);
+	}
+	kbd {
+		font-family: inherit;
+		border: 1px solid currentColor;
+		padding: 0 0.25em;
+	}
+</style>

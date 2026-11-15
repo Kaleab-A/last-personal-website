@@ -7,6 +7,7 @@ import { unified } from '@astrojs/markdown-remark';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import rehypeBaseLinks from './src/lib/rehype-base-links.mjs';
+import rehypeSidenotes from './src/lib/rehype-sidenotes.mjs';
 
 // BASE_PATH is set by the deploy workflow so each branch can be previewed
 // under /last-personal-website/preview/<branch>/. Locally it defaults to the
@@ -22,7 +23,7 @@ export default defineConfig({
 		// and so root-relative links in content ("/cv") get the base path.
 		processor: unified({
 			remarkPlugins: [remarkMath],
-			rehypePlugins: [rehypeKatex, [rehypeBaseLinks, { base }]],
+			rehypePlugins: [rehypeKatex, [rehypeBaseLinks, { base }], rehypeSidenotes],
 		}),
 		// Colors come from CSS variables in src/styles/tokens.css (monochrome).
 		shikiConfig: { theme: 'css-variables' },
