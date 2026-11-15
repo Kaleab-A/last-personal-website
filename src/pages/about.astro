@@ -1,0 +1,41 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPage, getSite } from '../lib/content';
+import { url } from '../lib/url';
+
+const site = await getSite();
+const about = await getPage('about');
+const { Content } = await render(about);
+---
+
+<BaseLayout title={about.data.title}>
+	<article class="paper">
+		<img class="portrait" src={url(site.portrait)} alt={`Pencil sketch of ${site.shortName}`} width="451" height="553" />
+		<h1>{about.data.title}</h1>
+		<div class="prose">
+			<Content />
+		</div>
+		<hr />
+		<p class="label">elsewhere</p>
+		<p class="links">
+			{site.socials.map((s) => <a class="btn" href={s.url}>{s.label}</a>)}
+			{site.email && <a class="btn" href={`mailto:${site.email}`}>email</a>}
+			<a class="btn" href={url('/cv')}>cv</a>
+		</p>
+	</article>
+</BaseLayout>
+
+<style>
+	.portrait {
+		float: right;
+		width: clamp(7rem, 26%, 12rem);
+		margin: 0 0 1rem 1.5rem;
+		border: var(--line);
+	}
+	.links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+	}
+</style>

@@ -1,0 +1,129 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ExperienceItem from '../components/cv/ExperienceItem.astro';
+import { getExperience, getProjects, getSite } from '../lib/content';
+import { url } from '../lib/url';
+
+const site = await getSite();
+const { work, education } = await getExperience();
+const projects = (await getProjects()).filter((p) => p.featured);
+const home = new URL(url('/'), Astro.site);
+---
+
+<BaseLayout title="CV" description={`CV of ${site.name}.`}>
+	<article class="paper cv print-urls">
+		<header class="cv__head">
+			<h1>{site.name}</h1>
+			<p class="mono contact">
+				{site.email && <a href={`mailto:${site.email}`}>{site.email}</a>}
+				{site.socials.map((s) => <a href={s.url}>{s.label}</a>)}
+				<a href={home.href}>{home.host}{home.pathname.replace(/\/$/, '')}</a>
+			</p>
+			<p class="actions no-print">
+				<button type="button" class="btn" data-print>print / save as pdf</button>
+				{site.resume && <a class="btn" href={url(site.resume)}>download pdf</a>}
+			</p>
+		</header>
+
+		<section>
+			<h2 class="label cv__h">Experience</h2>
+			{work.length ? work.map((e) => <ExperienceItem entry={e} />) : <p class="muted">Coming soon.</p>}
+		</section>
+
+		<section>
+			<h2 class="label cv__h">Education</h2>
+			{education.length ? education.map((e) => <ExperienceItem entry={e} />) : <p class="muted">Coming soon.</p>}
+		</section>
+
+		{
+			projects.length > 0 && (
+				<section>
+					<h2 class="label cv__h">Selected projects</h2>
+					<ul class="cv__projects">
+						{projects.map((p) => (
+							<li>
+								<strong>{p.links[0] ? <a href={p.links[0].href}>{p.title}</a> : p.title}</strong>
+								{' '}— {p.summary} <span class="muted mono">({p.skills.slice(0, 4).join(', ')})</span>
+							</li>
+						))}
+					</ul>
+				</section>
+			)
+		}
+
+		{
+			site.skills.length > 0 && (
+				<section>
+					<h2 class="label cv__h">Skills</h2>
+					<dl class="cv__skills">
+						{site.skills.map((g) => (
+							<>
+								<dt>{g.group}</dt>
+								<dd>{g.items.join(', ')}</dd>
+							</>
+						))}
+					</dl>
+				</section>
+			)
+		}
+	</article>
+</BaseLayout>
+
+<script>
+	document.addEventListener('astro:page-load', () => {
+		document.querySelectorAll<HTMLButtonElement>('[data-print]').forEach((button) => {
+			button.addEventListener('click', () => window.print());
+		});
+	});
+</script>
+
+<style>
+	.cv__head {
+		border-bottom: var(--line);
+		margin-bottom: 1.5rem;
+	}
+	.cv__head h1 {
+		margin-bottom: 0.3rem;
+	}
+	.contact {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem 1.25rem;
+		font-size: 0.85rem;
+	}
+	.actions {
+		display: flex;
+		gap: 0.6rem;
+	}
+	.cv__h {
+		margin: 2rem 0 0.9rem;
+		padding-bottom: 0.2rem;
+		border-bottom: 1px solid var(--ink);
+		font-size: 0.8rem;
+	}
+	.cv__projects {
+		padding-left: 1.2rem;
+		font-size: 1rem;
+	}
+	.cv__projects li + li {
+		margin-top: 0.5rem;
+	}
+	.cv__skills {
+		display: grid;
+		grid-template-columns: max-content 1fr;
+		gap: 0.3rem 1.25rem;
+		font-size: 1rem;
+	}
+	.cv__skills dt {
+		font-family: var(--mono);
+		font-size: 0.85rem;
+	}
+	.cv__skills dd {
+		margin: 0;
+	}
+	@media print {
+		.cv__h {
+			margin-top: 1.2rem;
+		}
+	}
+</style>

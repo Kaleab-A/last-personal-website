@@ -1,0 +1,22 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPage } from '../lib/content';
+import { isoDate } from '../lib/dates';
+
+const now = await getPage('now');
+const { Content } = await render(now);
+---
+
+<BaseLayout title="Now" description="What Kaleab is up to right now.">
+	<article class="paper">
+		<p class="label muted">
+			A <a href="https://nownownow.com/about">now page</a>
+			{now.data.updated && <> · updated {isoDate(now.data.updated)}</>}
+		</p>
+		<h1>What is Kaleab up to?</h1>
+		<div class="prose">
+			<Content />
+		</div>
+	</article>
+</BaseLayout>

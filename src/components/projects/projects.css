@@ -1,0 +1,132 @@
+/* ---------- project cards ---------- */
+.project-grid {
+	display: grid;
+	gap: 1.75rem 1.5rem;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+	align-items: start;
+}
+
+.project-card {
+	container-type: inline-size;
+	background: var(--paper);
+	border: var(--line);
+	box-shadow: var(--shadow);
+	transition:
+		transform 0.18s var(--ease),
+		box-shadow 0.18s var(--ease);
+}
+.project-card:hover {
+	transform: translate(-3px, -3px);
+	box-shadow: var(--shadow-lift);
+}
+
+.project-card__img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+	border-bottom: var(--line);
+	filter: grayscale(1) contrast(1.1);
+	transition: filter 0.3s;
+}
+.project-card:hover .project-card__img {
+	filter: none;
+}
+
+.project-card__body {
+	padding: 1rem 1.15rem 1.1rem;
+}
+.project-card__title {
+	margin: 0;
+	font-size: 1.3rem;
+}
+.project-card__meta {
+	margin: 0.2rem 0 0.6rem;
+	color: var(--muted);
+}
+.project-card__summary {
+	font-size: 1rem;
+	margin-bottom: 0.8rem;
+}
+
+.project-card__skills {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.35rem;
+	list-style: none;
+	padding: 0;
+	margin: 0 0 0.8rem;
+	font-family: var(--mono);
+	font-size: 0.7rem;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+.project-card__skills li {
+	border: 1px solid var(--ink);
+	padding: 0.05em 0.45em;
+}
+
+/* "GitHub | Demo | Write-up", as in the original design */
+.project-card__links {
+	margin: 0;
+	font-family: var(--mono);
+	font-size: 0.85rem;
+}
+.project-card__links a + a::before {
+	content: '|';
+	display: inline-block;
+	padding: 0 0.6em;
+	background: var(--paper);
+	color: var(--ink);
+}
+
+/* wide card (e.g. a single column on a big sheet): image on the left */
+@container (min-width: 36rem) {
+	.project-card__inner:has(.project-card__img) {
+		display: grid;
+		grid-template-columns: 38% 1fr;
+	}
+	.project-card__img {
+		height: 100%;
+		aspect-ratio: auto;
+		border-bottom: 0;
+		border-right: var(--line);
+	}
+}
+
+/* ---------- filter chips ---------- */
+.chip-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin: 1.25rem 0 0.75rem;
+}
+.chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5em;
+	font-family: var(--mono);
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	padding: 0.3em 0.6em;
+	border: var(--line);
+	background: var(--paper);
+	color: var(--ink);
+	cursor: pointer;
+}
+.chip:hover,
+.chip[aria-pressed='true'] {
+	background: var(--ink);
+	color: var(--paper);
+}
+.chip__count {
+	border-left: 1px solid currentColor;
+	padding-left: 0.5em;
+}
+.chip--clear {
+	border-style: dashed;
+}
+.project-filter .label {
+	margin-bottom: 1.25rem;
+}

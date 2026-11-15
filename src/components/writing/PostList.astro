@@ -1,0 +1,69 @@
+---
+import type { Post } from '../../lib/content';
+import { isoDate } from '../../lib/dates';
+import { url } from '../../lib/url';
+
+interface Props {
+	posts: Post[];
+	/** Hide summaries (used on the home page sheet). */
+	compact?: boolean;
+}
+const { posts, compact = false } = Astro.props;
+---
+
+{
+	posts.length === 0 ? (
+		<p class="muted empty">Nothing here yet. The first post is on its way.</p>
+	) : (
+		<ol class="post-list">
+			{posts.map((post) => (
+				<li>
+					<time class="mono" datetime={post.data.date.toISOString()}>
+						{isoDate(post.data.date)}
+					</time>
+					<div>
+						<a href={url(`/writing/${post.id}`)}>{post.data.title}</a>
+						{post.data.draft && <span class="label draft">draft</span>}
+						{!compact && <p class="muted">{post.data.summary}</p>}
+					</div>
+				</li>
+			))}
+		</ol>
+	)
+}
+
+<style>
+	.post-list {
+		list-style: none;
+		padding: 0;
+		margin: 0 0 1.5rem;
+	}
+	li {
+		display: grid;
+		grid-template-columns: 7.5rem 1fr;
+		gap: 0.25rem 1rem;
+		padding: 0.7rem 0;
+		border-bottom: 1px dashed var(--ink);
+	}
+	li:first-child {
+		border-top: 1px dashed var(--ink);
+	}
+	time {
+		font-size: 0.85rem;
+		padding-top: 0.2rem;
+	}
+	p {
+		margin: 0.2rem 0 0;
+		font-size: 1rem;
+	}
+	.draft {
+		margin-left: 0.5rem;
+		border: 1px dashed var(--ink);
+		padding: 0 0.3rem;
+	}
+	@media (max-width: 480px) {
+		li {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

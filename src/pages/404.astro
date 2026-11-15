@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { url } from '../lib/url';
+---
+
+<BaseLayout title="Not found">
+	<article class="paper lost">
+		<p class="label">error 404</p>
+		<h1>This page slipped out of the stack.</h1>
+		<p>It might have moved, or it never existed. Try the <a href={url('/')}>front page</a>.</p>
+	</article>
+</BaseLayout>
+
+<style>
+	.lost {
+		rotate: -2deg;
+		margin-top: 2rem;
+	}
+</style>

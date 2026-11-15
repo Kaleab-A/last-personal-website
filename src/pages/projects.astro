@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectFilter from '../components/projects/ProjectFilter';
+import { getProjects } from '../lib/content';
+
+const projects = await getProjects();
+---
+
+<BaseLayout title="Projects" description="Things Kaleab has built: machine learning, math, and the web.">
+	<article class="paper">
+		<h1>Fun projects!!</h1>
+		<p>Pick one or more skills to filter. Nothing picked shows everything.</p>
+		<ProjectFilter client:load projects={projects} />
+	</article>
+</BaseLayout>

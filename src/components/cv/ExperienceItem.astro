@@ -1,0 +1,67 @@
+---
+import type { Experience } from '../../lib/content';
+import { monthYear } from '../../lib/dates';
+
+interface Props {
+	entry: Experience;
+}
+const { data } = Astro.props.entry;
+---
+
+<article class="xp">
+	<div class="xp__head">
+		<h3>
+			<strong>{data.role}</strong>,{' '}
+			{data.url ? <a href={data.url}>{data.org}</a> : data.org}
+			{data.draft && <span class="label xp__draft">draft</span>}
+		</h3>
+		<p class="mono xp__dates">{monthYear(data.start)} – {monthYear(data.end)}</p>
+	</div>
+	{data.location && <p class="muted xp__loc">{data.location}</p>}
+	{
+		data.bullets.length > 0 && (
+			<ul>
+				{data.bullets.map((b) => (
+					<li>{b}</li>
+				))}
+			</ul>
+		)
+	}
+</article>
+
+<style>
+	.xp {
+		margin-bottom: 1.4rem;
+	}
+	.xp__head {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 0 1rem;
+	}
+	h3 {
+		margin: 0;
+		font-size: 1.1rem;
+	}
+	.xp__dates {
+		margin: 0;
+		font-size: 0.85rem;
+		white-space: nowrap;
+	}
+	.xp__loc {
+		margin: 0;
+		font-size: 0.95rem;
+	}
+	ul {
+		margin: 0.35rem 0 0;
+		padding-left: 1.2rem;
+		font-size: 1rem;
+	}
+	.xp__draft {
+		margin-left: 0.4rem;
+		border: 1px dashed var(--ink);
+		padding: 0 0.3rem;
+		font-weight: normal;
+	}
+</style>
