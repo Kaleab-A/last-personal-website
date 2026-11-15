@@ -253,3 +253,28 @@ button {
 		scroll-behavior: auto !important;
 	}
 }
+
+/* ---------- inverted mode ---------- */
+/* Line art (the sketch, diagrams) reads as white-on-black when inverted.
+   Mark photos with data-no-invert to keep them as they are. */
+:root[data-theme='dark'] img:not([data-no-invert], .project-card__img) {
+	filter: invert(1);
+}
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme='light']) img:not([data-no-invert], .project-card__img) {
+		filter: invert(1);
+	}
+}
+
+/* The toggle wipes the new colours down the page, like a scanner. */
+html.theme-wipe::view-transition-old(root) {
+	animation: none;
+}
+html.theme-wipe::view-transition-new(root) {
+	animation: theme-wipe 0.55s var(--ease);
+}
+@keyframes theme-wipe {
+	from {
+		clip-path: inset(0 0 100% 0);
+	}
+}

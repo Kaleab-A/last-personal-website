@@ -30,7 +30,38 @@ const links = [
 			}
 		</ul>
 	</nav>
+	<button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" title="Invert colours">
+		<span aria-hidden="true">◐</span> invert
+	</button>
 </header>
+
+<script>
+	const root = document.documentElement;
+	const effective = () =>
+		root.dataset.theme ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+	document.addEventListener('astro:page-load', () => {
+		const button = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+		if (!button) return;
+		button.setAttribute('aria-pressed', String(effective() === 'dark'));
+		button.addEventListener('click', () => {
+			const next = effective() === 'dark' ? 'light' : 'dark';
+			try {
+				localStorage.setItem('theme', next);
+			} catch {}
+			const apply = () => {
+				root.dataset.theme = next;
+				button.setAttribute('aria-pressed', String(next === 'dark'));
+			};
+			if (!document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+				apply();
+				return;
+			}
+			root.classList.add('theme-wipe');
+			document.startViewTransition(apply).finished.finally(() => root.classList.remove('theme-wipe'));
+		});
+	});
+</script>
 
 <style>
 	.site-nav {
@@ -73,6 +104,23 @@ const links = [
 	a[aria-current='page'] .slash,
 	a:hover .slash {
 		color: inherit;
+	}
+	nav {
+		margin-left: auto;
+	}
+	.theme-toggle {
+		padding: 0.1rem 0.45rem;
+		border: var(--line);
+		background: var(--paper);
+		color: var(--ink);
+		font-family: var(--mono);
+		font-size: 0.8rem;
+		cursor: pointer;
+	}
+	.theme-toggle:hover,
+	.theme-toggle[aria-pressed='true'] {
+		background: var(--ink);
+		color: var(--paper);
 	}
 	@media (max-width: 480px) {
 		.site-nav {

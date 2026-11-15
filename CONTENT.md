@@ -76,6 +76,9 @@ draft: true                 # flip to false to publish
 - Code: fenced blocks with a language, e.g. ` ```python `.
 - Footnotes: `text[^1]` and later `[^1]: the note`.
 - `.md` works too, if you don't need components.
+- In inverted (dark) mode images are colour-inverted, which suits line art. For
+  a photo, use `<img src="/photo.jpg" alt="..." data-no-invert />` in an `.mdx`
+  post to keep it as is.
 
 ## Music: `public/` + `site.yaml`
 

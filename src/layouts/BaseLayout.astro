@@ -44,7 +44,24 @@ const tracks = site.music.map((t) => ({ title: t.title, sources: t.sources.map((
 		<link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
 		<link rel="alternate" type="application/rss+xml" title={`${site.shortName}'s writing`} href={url('/rss.xml')} />
 		<link rel="sitemap" href={url('/sitemap-index.xml')} />
-		<meta name="theme-color" content="#ffffff" />
+		<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+		<script is:inline>
+			// Apply a saved light/dark choice before first paint (no flash), and
+			// again after each client-side navigation swaps in a new <html>.
+			if (!window.__theme) {
+				window.__theme = () => {
+					let t = null;
+					try {
+						t = localStorage.getItem('theme');
+					} catch {}
+					if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t;
+					else delete document.documentElement.dataset.theme;
+				};
+				window.__theme();
+				document.addEventListener('astro:after-swap', window.__theme);
+			}
+		</script>
 		<meta property="og:type" content={type} />
 		<meta property="og:title" content={title ?? site.name} />
 		<meta property="og:description" content={desc} />
