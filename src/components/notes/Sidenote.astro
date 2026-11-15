@@ -1,0 +1,16 @@
+---
+/**
+ * A numbered note in the margin, Tufte-style. Use inline in a post:
+ *   Some claim.<Sidenote>The aside that would interrupt the sentence.</Sidenote>
+ * Wide screens: sits in the right margin next to the line it belongs to.
+ * Narrow screens: tap the number to open it in place.
+ * Pure HTML + CSS (a checkbox toggle), so it works without JavaScript.
+ */
+const id = `sn-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<label for={id} class="sidenote-ref"><span class="visually-hidden">Side note</span></label><input
+	type="checkbox"
+	id={id}
+	class="note-toggle"
+/><span class="sidenote"><slot /></span>

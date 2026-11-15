@@ -1,7 +1,10 @@
 ---
 import 'katex/dist/katex.min.css';
+import '../styles/sidenotes.css';
 import { render } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
+import Sidenote from '../components/notes/Sidenote.astro';
+import MarginNote from '../components/notes/MarginNote.astro';
 import type { Post } from '../lib/content';
 import { isoDate, readingMinutes } from '../lib/dates';
 import { url } from '../lib/url';
@@ -15,6 +18,8 @@ interface Props {
 const { post, newer, older } = Astro.props;
 const { data } = post;
 const { Content } = await render(post);
+// Posts with notes get a wider sheet with a margin column on big screens.
+const hasNotes = /\[\^|<Sidenote|<MarginNote/.test(post.body ?? '');
 const meta = [
 	data.updated && `updated ${isoDate(data.updated)}`,
 	`${readingMinutes(post.body)} min read`,
@@ -23,8 +28,8 @@ const meta = [
 ].filter(Boolean);
 ---
 
-<BaseLayout title={data.title} description={data.summary} type="article">
-	<article class="paper post">
+<BaseLayout title={data.title} description={data.summary} type="article" wide={hasNotes}>
+	<article class:list={['paper', 'post', { 'post--notes': hasNotes }]}>
 		<header class="post__head">
 			<p class="label"><a href={url('/writing')}>← all writing</a></p>
 			<h1>{data.title}</h1>
@@ -35,7 +40,7 @@ const meta = [
 		</header>
 
 		<div class="prose">
-			<Content />
+			<Content components={{ Sidenote, MarginNote }} />
 		</div>
 
 		{

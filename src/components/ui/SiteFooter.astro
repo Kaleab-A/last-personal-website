@@ -1,6 +1,7 @@
 ---
 import { getSite } from '../../lib/content';
 import { url } from '../../lib/url';
+import ViewSource from './ViewSource.astro';
 
 const site = await getSite();
 const year = new Date().getFullYear();
@@ -12,6 +13,8 @@ const year = new Date().getFullYear();
 	<a href={url('/rss.xml')}>rss</a>
 	<span aria-hidden="true">·</span>
 	<a href="https://github.com/Kaleab-A/last-personal-website">source</a>
+	<span aria-hidden="true">·</span>
+	<ViewSource />
 	<span aria-hidden="true">·</span>
 	<span class="muted">no cookies, no trackers</span>
 </footer>

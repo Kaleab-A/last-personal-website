@@ -1,0 +1,124 @@
+/*
+ * Side notes and margin notes (src/components/notes/), plus footnotes copied
+ * into the margin by src/lib/rehype-sidenotes.mjs.
+ *
+ * Side notes are lettered (a, b, c) so they never clash with numbered
+ * footnotes. Narrow screens: notes are hidden; tapping the number (or ⊕) opens one
+ * in place. Footnotes stay at the bottom as usual.
+ * Wide screens (posts with notes): the text column narrows and notes float
+ * into the right margin beside the line they belong to.
+ */
+.prose {
+	counter-reset: sidenote;
+}
+
+.sidenote-ref,
+.marginnote-ref {
+	cursor: pointer;
+}
+.sidenote-ref {
+	counter-increment: sidenote;
+}
+.sidenote-ref::after {
+	content: counter(sidenote, lower-alpha);
+	position: relative;
+	top: -0.5em;
+	padding: 0 0.15em;
+	font-family: var(--mono);
+	font-size: 0.7em;
+	line-height: 0;
+}
+.marginnote-ref::after {
+	content: '⊕';
+	padding: 0 0.15em;
+}
+.sidenote-ref:hover::after,
+.marginnote-ref:hover::after {
+	background: var(--ink);
+	color: var(--paper);
+}
+
+.note-toggle {
+	position: absolute;
+	opacity: 0;
+	width: 1px;
+	height: 1px;
+}
+.note-toggle:focus-visible + .sidenote,
+.note-toggle:focus-visible + .marginnote {
+	outline: 2px dashed var(--ink);
+}
+
+.sidenote,
+.marginnote,
+.sidenote--auto {
+	display: none;
+	font-size: 0.88rem;
+	line-height: 1.45;
+}
+.sidenote::before {
+	content: counter(sidenote, lower-alpha) '. ';
+	font-family: var(--mono);
+}
+.sidenote--auto::before {
+	content: attr(data-n) '. ';
+	font-family: var(--mono);
+}
+
+/* narrow: opened in place */
+.note-toggle:checked + .sidenote,
+.note-toggle:checked + .marginnote {
+	display: block;
+	float: left;
+	clear: both;
+	width: 100%;
+	margin: 0.6rem 0;
+	padding: 0.5rem 0.75rem;
+	border: var(--line);
+	border-left-width: 4px;
+}
+
+/* wide: in the margin */
+@media (min-width: 1100px) {
+	.post--notes .prose {
+		--note-w: 15rem;
+		--note-gap: 2.5rem;
+		max-width: none;
+		margin-right: calc(var(--note-w) + var(--note-gap));
+	}
+	.post--notes .sidenote,
+	.post--notes .marginnote,
+	.post--notes .sidenote--auto,
+	.post--notes .note-toggle:checked + .sidenote,
+	.post--notes .note-toggle:checked + .marginnote {
+		display: block;
+		float: right;
+		clear: right;
+		position: relative;
+		width: var(--note-w);
+		margin: 0.3rem calc(-1 * (var(--note-w) + var(--note-gap))) 1rem 0;
+		padding: 0 0 0 0.75rem;
+		border: 0;
+		border-left: var(--line);
+	}
+	.post--notes .sidenote-ref,
+	.post--notes .marginnote-ref,
+	.post--notes sup a[data-footnote-ref] {
+		pointer-events: none;
+	}
+	.post--notes .marginnote-ref {
+		display: none;
+	}
+	.post--notes .sidenote-ref::after {
+		border: 0;
+	}
+	.post--notes .footnotes {
+		display: none;
+	}
+}
+
+@media print {
+	.sidenote--auto {
+		display: none !important;
+	}
+}

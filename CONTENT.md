@@ -74,7 +74,10 @@ draft: true                 # flip to false to publish
 
 - Inline math: `$\nabla f(x)$`. Display math: `$$ ... $$` on its own lines.
 - Code: fenced blocks with a language, e.g. ` ```python `.
-- Footnotes: `text[^1]` and later `[^1]: the note`.
+- Footnotes: `text[^1]` and later `[^1]: the note`. On wide screens they also
+  appear in the margin beside the text.
+- Margin notes (`.mdx` only, no import needed): `<Sidenote>an aside</Sidenote>`
+  (lettered a, b, c…) and `<MarginNote>an unlettered aside</MarginNote>`.
 - `.md` works too, if you don't need components.
 - In inverted (dark) mode images are colour-inverted, which suits line art. For
   a photo, use `<img src="/photo.jpg" alt="..." data-no-invert />` in an `.mdx`

@@ -1,0 +1,13 @@
+---
+/**
+ * Like <Sidenote>, but unnumbered: for small asides, figure credits, or a
+ * "see also". On narrow screens it hides behind a ⊕ you can tap.
+ */
+const id = `mn-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<label for={id} class="marginnote-ref"><span class="visually-hidden">Margin note</span></label><input
+	type="checkbox"
+	id={id}
+	class="note-toggle"
+/><span class="marginnote"><slot /></span>

@@ -17,9 +17,11 @@ interface Props {
 	type?: 'website' | 'article';
 	/** "home" lets the page stack fill the screen; "page" is a centred sheet. */
 	variant?: 'home' | 'page';
+	/** A wider sheet, e.g. for posts with margin notes. */
+	wide?: boolean;
 }
 
-const { title, description, image, type = 'website', variant = 'page' } = Astro.props;
+const { title, description, image, type = 'website', variant = 'page', wide = false } = Astro.props;
 const site = await getSite();
 
 const fullTitle = title ? `${title} · ${site.name}` : site.name;
@@ -75,7 +77,7 @@ const tracks = site.music.map((t) => ({ title: t.title, sources: t.sources.map((
 		<a class="skip-link" href="#main">Skip to content</a>
 		{preview && <div class="preview-banner">preview · {branch ?? 'branch build'} · not the live site</div>}
 		<SiteNav />
-		<main id="main" class={variant}>
+		<main id="main" class:list={[variant, { wide }]}>
 			<slot />
 		</main>
 		<SiteFooter />
@@ -122,8 +124,12 @@ const tracks = site.music.map((t) => ({ title: t.title, sources: t.sources.map((
 		margin-inline: auto;
 		padding: clamp(2rem, 5vh, 3.5rem) 0 clamp(4rem, 8vh, 6rem);
 	}
+	main.page.wide {
+		width: min(100% - 2 * var(--gutter), 74rem);
+	}
 	@media (max-width: 639px) {
-		main.page {
+		main.page,
+		main.page.wide {
 			/* leave room for the ghost sheets peeking out on the left */
 			width: calc(100% - 1.5rem - 18px);
 			margin-left: calc(0.75rem + 18px);
