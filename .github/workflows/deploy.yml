@@ -1,0 +1,75 @@
+# The March 2024 version of the site, kept as a snapshot.
+# Builds the Create React App in last-personal-website/ and publishes it to
+#   https://kaleab-a.github.io/last-personal-website/preview/<branch>/
+# (for this branch: preview/legacy2024/). The live site comes from main.
+name: Deploy legacy
+
+on:
+  push:
+    branches: ['**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: last-personal-website
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Work out where this branch goes
+        id: target
+        run: |
+          SLUG=$(echo "$GITHUB_REF_NAME" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g; s#^-+|-+$##g')
+          REPO="${GITHUB_REPOSITORY#*/}"
+          echo "base=/$REPO/preview/$SLUG" >> "$GITHUB_OUTPUT"
+          echo "dest=preview/$SLUG" >> "$GITHUB_OUTPUT"
+
+      - run: npm ci
+
+      - name: Build
+        # CI=false: Create React App would otherwise fail the build on the
+        # old code's lint warnings.
+        run: npm run build
+        env:
+          CI: 'false'
+          PUBLIC_URL: ${{ steps.target.outputs.base }}
+
+      - name: Publish to gh-pages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEST: ${{ steps.target.outputs.dest }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          publish() {
+            rm -rf pages
+            git clone --depth 1 --branch gh-pages \
+              "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" pages || return 1
+            rm -rf "pages/$DEST"
+            mkdir -p "pages/$DEST"
+            cp -R build/. "pages/$DEST/"
+            touch pages/.nojekyll
+            git -C pages add -A
+            git -C pages commit -qm "Deploy ${GITHUB_REF_NAME} @ ${GITHUB_SHA::7}" || { echo "Nothing changed"; return 0; }
+            git -C pages push
+          }
+          # Another deploy may push to gh-pages first; retry from a fresh clone.
+          for attempt in $(seq 1 10); do
+            publish && exit 0
+            echo "Push rejected (attempt $attempt); retrying"
+            sleep $((attempt * 3 + RANDOM % 5))
+          done
+          exit 1
