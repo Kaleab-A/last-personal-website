@@ -1,0 +1,205 @@
+/*
+ * Folder tabs. One tab per sheet, riding on that sheet's top edge. Each tab
+ * keeps a fixed horizontal slot, so as sheets shuffle the tabs only move up
+ * and down and never overlap. Layered on top of stack.css.
+ */
+.stack--tabs {
+	container-type: inline-size;
+	--sheet-w: min(60rem, 74cqw);
+	--tab-h: 2.1rem;
+	--tab-gap: 4px;
+	--tab-indent: 0.75rem;
+	--tab-w: min(
+		10.5rem,
+		calc((var(--sheet-w) - (var(--n) - 1) * var(--dx) - var(--tab-indent)) / var(--n) - var(--tab-gap))
+	);
+	--sheet-h: min(46rem, calc(100% - (var(--n) - 1) * var(--dy) - var(--tab-h) - 1rem));
+}
+
+/* make room above the pile for the tabs */
+.stack--tabs .sheet {
+	top: calc(50% + var(--tab-h) / 2);
+	height: var(--sheet-h);
+}
+
+.stack__tabs {
+	position: absolute;
+	inset: 0;
+	z-index: calc(var(--n) + 1);
+	pointer-events: none;
+}
+
+.stack__tab {
+	position: absolute;
+	/* fixed x per tab: aligned to the front sheet's left edge */
+	left: calc(
+		50% - var(--sheet-w) / 2 + var(--spread) * var(--dx) + var(--tab-indent) +
+			var(--i) * (var(--tab-w) + var(--tab-gap))
+	);
+	/* y follows the sheet: sit exactly on its top edge */
+	top: calc(
+		50% + var(--tab-h) / 2 - var(--sheet-h) / 2 + (var(--spread) - var(--o)) * var(--dy) - var(--tab-h)
+	);
+	width: var(--tab-w);
+	height: var(--tab-h);
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+	margin: 0;
+	padding: 0 0.65rem;
+	border: var(--line);
+	border-bottom: 0;
+	background: var(--paper);
+	color: var(--ink);
+	font-family: var(--mono);
+	font-size: 0.72rem;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	white-space: nowrap;
+	cursor: pointer;
+	pointer-events: auto;
+	transition: top 0.55s var(--ease);
+}
+.stack__tab:hover,
+.stack__tab[aria-selected='true'] {
+	background: var(--ink);
+	color: var(--paper);
+}
+.stack__tab:focus-visible {
+	outline-offset: 2px;
+}
+.stack__tab-num {
+	font-weight: normal;
+}
+.stack__tab-label {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* "open page →" sits in the front sheet's corner */
+.sheet__open {
+	position: absolute;
+	top: 0.6rem;
+	right: 0.9rem;
+	z-index: 1;
+	padding: 0 0.3rem;
+	background: var(--paper);
+	font-family: var(--mono);
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+}
+.sheet__open + .sheet__body {
+	padding-top: 2.75rem;
+}
+
+/* "?" in the corner, for people who don't know to press it */
+.stack__help-btn {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: calc(var(--n) + 2);
+	width: 2rem;
+	height: 2rem;
+	border: var(--line);
+	background: var(--paper);
+	color: var(--ink);
+	box-shadow: 2px 2px 0 var(--ink);
+	font-family: var(--mono);
+	font-weight: bold;
+	cursor: pointer;
+}
+.stack__help-btn:hover {
+	background: var(--ink);
+	color: var(--paper);
+}
+
+/* ---------- cheat sheet ---------- */
+.stack-help {
+	max-width: min(26rem, calc(100vw - 2rem));
+	padding: 1.25rem 1.5rem;
+	border: var(--line);
+	box-shadow: var(--shadow);
+	background: var(--paper);
+	color: var(--ink);
+	font-family: var(--mono);
+	font-size: 0.85rem;
+}
+.stack-help::backdrop {
+	background: color-mix(in srgb, var(--paper) 70%, transparent);
+}
+.stack-help h2 {
+	margin: 0 0 1rem;
+}
+.stack-help dl {
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	gap: 0.5rem 1.25rem;
+	margin: 0 0 1rem;
+}
+.stack-help dd {
+	margin: 0;
+}
+.stack-help kbd {
+	display: inline-block;
+	min-width: 1.6em;
+	padding: 0 0.3em;
+	border: 1px solid var(--ink);
+	box-shadow: 1px 1px 0 var(--ink);
+	text-align: center;
+	font-family: inherit;
+}
+.stack-help form {
+	margin: 0;
+}
+
+@media (max-width: 1023px) {
+	.stack--tabs {
+		--sheet-w: 86cqw;
+	}
+}
+
+/* ---------- phone: a deck with a scrolling tab strip; swipe to flip ---------- */
+@media (max-width: 639px), (max-height: 519px) {
+	.stack--tabs {
+		container-type: normal;
+	}
+	.stack__tabs {
+		position: sticky;
+		top: 0;
+		inset: auto;
+		z-index: 5;
+		display: flex;
+		gap: var(--tab-gap);
+		overflow-x: auto;
+		scrollbar-width: none;
+		padding-top: 0.5rem;
+		background: var(--paper);
+		pointer-events: auto;
+	}
+	.stack__tabs::-webkit-scrollbar {
+		display: none;
+	}
+	.stack__tab {
+		position: static;
+		flex: none;
+		width: auto;
+		height: 2.5rem;
+		transition: none;
+	}
+	.stack--tabs .sheet:not([data-front]) {
+		display: none;
+	}
+	.stack--tabs .sheet[data-front] {
+		margin: 0 0 0.9rem;
+		touch-action: pan-y;
+		transform: translateX(var(--drag, 0px)) rotate(calc(var(--drag, 0px) / 80px * 1deg));
+	}
+	.stack--tabs .sheet[data-front]:not([data-dragging]) {
+		transition: transform 0.25s var(--ease);
+	}
+	.stack__help-btn {
+		display: none;
+	}
+}
