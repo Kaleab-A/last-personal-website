@@ -76,6 +76,17 @@ draft: true                 # flip to false to publish
 - Code: fenced blocks with a language, e.g. ` ```python `.
 - Footnotes: `text[^1]` and later `[^1]: the note`.
 - `.md` works too, if you don't need components.
+- Interactive figures (`.mdx` only): import from `src/components/widgets/` and
+  add `client:visible` so it loads when scrolled to. See `widgets-demo.mdx`:
+
+  ```mdx
+  import GradientDescent from '../../components/widgets/GradientDescent';
+
+  <GradientDescent client:visible caption="What the reader should try." />
+  ```
+
+  Available: `GradientDescent`, `Fourier` (`shape="square|sawtooth|triangle"`),
+  `TinyNet` (`dataset="circle|xor|moons"`). Figures are numbered automatically.
 
 ## Music: `public/` + `site.yaml`
 
