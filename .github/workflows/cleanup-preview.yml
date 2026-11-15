@@ -7,10 +7,6 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: gh-pages
-  cancel-in-progress: false
-
 jobs:
   cleanup:
     if: github.event.ref_type == 'branch'
@@ -24,13 +20,22 @@ jobs:
           SLUG=$(echo "$BRANCH" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g; s#^-+|-+$##g')
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git clone --depth 1 --branch gh-pages \
-            "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" pages
-          cd pages
-          if [ -d "preview/$SLUG" ]; then
-            git rm -rq "preview/$SLUG"
-            git commit -m "Remove preview for deleted branch $BRANCH"
-            git push
-          else
-            echo "No preview for $BRANCH"
-          fi
+          remove() {
+            rm -rf pages
+            git clone --depth 1 --branch gh-pages \
+              "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" pages || return 1
+            if [ ! -d "pages/preview/$SLUG" ]; then
+              echo "No preview for $BRANCH"
+              return 0
+            fi
+            git -C pages rm -rq "preview/$SLUG"
+            git -C pages commit -qm "Remove preview for deleted branch $BRANCH"
+            git -C pages push
+          }
+          # A deploy may push to gh-pages at the same moment; retry from a fresh clone.
+          for attempt in $(seq 1 10); do
+            remove && exit 0
+            echo "Push rejected (attempt $attempt); retrying"
+            sleep $((attempt * 3 + RANDOM % 5))  # back off, with jitter so retries spread out
+          done
+          exit 1
