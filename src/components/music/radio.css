@@ -1,0 +1,126 @@
+/* The radio: a small bordered box, bottom-right; a full-width bar on phones. */
+.radio {
+	position: fixed;
+	right: 1rem;
+	bottom: 1rem;
+	z-index: 50;
+	width: min(19rem, calc(100vw - 2rem));
+	display: flex;
+	align-items: center;
+	gap: 0.65rem;
+	padding: 0.45rem 0.6rem;
+	background: var(--paper);
+	color: var(--ink);
+	border: var(--line);
+	box-shadow: var(--shadow);
+	font-family: var(--mono);
+	font-size: 0.75rem;
+}
+
+.radio button {
+	flex: none;
+	display: grid;
+	place-items: center;
+	width: 2.1rem;
+	height: 2.1rem;
+	border: var(--line);
+	background: var(--paper);
+	color: var(--ink);
+	cursor: pointer;
+	font-family: var(--mono);
+	font-size: 0.8rem;
+}
+.radio button:hover,
+.radio[data-playing] .radio__play {
+	background: var(--ink);
+	color: var(--paper);
+}
+
+.radio__info {
+	flex: 1;
+	min-width: 0;
+	display: grid;
+	gap: 0.1rem;
+}
+.radio__label {
+	display: flex;
+	align-items: end;
+	gap: 0.5rem;
+	font-size: 0.62rem;
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	color: var(--muted);
+}
+.radio__title {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.radio__time {
+	flex: none;
+	font-variant-numeric: tabular-nums;
+}
+
+/* three bouncing bars while playing */
+.radio__eq {
+	display: inline-flex;
+	align-items: end;
+	gap: 2px;
+	height: 0.6rem;
+}
+.radio__eq i {
+	width: 2px;
+	height: 30%;
+	background: var(--ink);
+}
+.radio[data-playing] .radio__eq i {
+	animation: radio-eq 0.9s ease-in-out infinite alternate;
+}
+.radio[data-playing] .radio__eq i:nth-child(2) {
+	animation-delay: -0.3s;
+}
+.radio[data-playing] .radio__eq i:nth-child(3) {
+	animation-delay: -0.6s;
+}
+@keyframes radio-eq {
+	to {
+		height: 100%;
+	}
+}
+
+/* seek bar: a thin line that fills in */
+.radio__seek {
+	appearance: none;
+	width: 100%;
+	height: 0.75rem;
+	margin: 0;
+	background: linear-gradient(var(--ink), var(--ink)) 0 50% / var(--pct, 0%) 2px no-repeat,
+		linear-gradient(var(--faint), var(--faint)) 0 50% / 100% 2px no-repeat;
+	cursor: pointer;
+}
+.radio__seek:disabled {
+	cursor: default;
+}
+.radio__seek::-webkit-slider-thumb {
+	appearance: none;
+	width: 8px;
+	height: 8px;
+	background: var(--ink);
+	border: 0;
+}
+.radio__seek::-moz-range-thumb {
+	width: 8px;
+	height: 8px;
+	background: var(--ink);
+	border: 0;
+	border-radius: 0;
+}
+
+@media (max-width: 639px) {
+	.radio {
+		left: 0.75rem;
+		right: 0.75rem;
+		bottom: 0.75rem;
+		width: auto;
+	}
+}
