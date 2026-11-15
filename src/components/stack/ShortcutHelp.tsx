@@ -48,7 +48,10 @@ export default function ShortcutHelp({ open, count, onClose }: Props) {
 				</dt>
 				<dd>close</dd>
 			</dl>
-			<p className="muted">On a phone, swipe sideways to flip pages.</p>
+			<p className="muted">
+				With a mouse, drag a tab to move its page around; “tidy up” puts them back. On a phone, swipe
+				sideways to flip pages.
+			</p>
 			<form method="dialog">
 				<button className="btn" type="submit">
 					got it

@@ -23,10 +23,11 @@
 	top: 50%;
 	width: var(--sheet-w);
 	height: min(46rem, calc(100% - (var(--n) - 1) * var(--dy) - 1rem));
-	/* centre the whole pile, then step each sheet up-left by its depth */
+	/* centre the whole pile, step each sheet up-left by its depth, then add
+	   wherever it has been dragged to (--x/--y) */
 	translate:
-		calc(-50% + (var(--spread) - var(--o)) * var(--dx))
-		calc(-50% + (var(--spread) - var(--o)) * var(--dy));
+		calc(-50% + (var(--spread) - var(--o)) * var(--dx) + var(--x, 0px))
+		calc(-50% + (var(--spread) - var(--o)) * var(--dy) + var(--y, 0px));
 	z-index: calc(var(--n) - var(--o));
 	display: flex;
 	flex-direction: column;
@@ -46,6 +47,21 @@
 .sheet:not([data-front]):hover {
 	transform: translate(-3px, -3px);
 	box-shadow: var(--shadow-lift);
+}
+
+/* ---------- dragging by the tab (desktop, mouse/pen; see tabs.css) ---------- */
+.sheet[data-lifted] {
+	transition: box-shadow 0.18s var(--ease);
+	box-shadow: 10px 10px 0 var(--ink);
+}
+.stack__tidy {
+	position: absolute;
+	top: 0;
+	/* left of the "?" button */
+	right: 2.6rem;
+	z-index: calc(var(--n) + 2);
+	min-height: 2rem;
+	padding-block: 0;
 }
 
 /* a little "pulled out of the pile" wobble when a sheet comes to the front */
@@ -107,5 +123,8 @@
 	}
 	.sheet__body {
 		overflow: visible;
+	}
+	.stack__tidy {
+		display: none;
 	}
 }

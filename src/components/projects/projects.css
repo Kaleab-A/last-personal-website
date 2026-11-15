@@ -26,11 +26,19 @@
 	aspect-ratio: 16 / 9;
 	object-fit: cover;
 	border-bottom: var(--line);
-	filter: grayscale(1) contrast(1.1);
+	filter: grayscale(1) contrast(1.1) var(--img-invert, );
 	transition: filter 0.3s;
 }
 .project-card:hover .project-card__img {
-	filter: none;
+	filter: var(--img-invert, none);
+}
+:root[data-theme='dark'] {
+	--img-invert: invert(1);
+}
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme='light']) {
+		--img-invert: invert(1);
+	}
 }
 
 .project-card__body {

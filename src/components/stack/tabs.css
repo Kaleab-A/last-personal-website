@@ -34,11 +34,12 @@
 	/* fixed x per tab: aligned to the front sheet's left edge */
 	left: calc(
 		50% - var(--sheet-w) / 2 + var(--spread) * var(--dx) + var(--tab-indent) +
-			var(--i) * (var(--tab-w) + var(--tab-gap))
+			var(--i) * (var(--tab-w) + var(--tab-gap)) + var(--x, 0px)
 	);
 	/* y follows the sheet: sit exactly on its top edge */
 	top: calc(
-		50% + var(--tab-h) / 2 - var(--sheet-h) / 2 + (var(--spread) - var(--o)) * var(--dy) - var(--tab-h)
+		50% + var(--tab-h) / 2 - var(--sheet-h) / 2 + (var(--spread) - var(--o)) * var(--dy) - var(--tab-h) +
+			var(--y, 0px)
 	);
 	width: var(--tab-w);
 	height: var(--tab-h);
@@ -59,7 +60,21 @@
 	white-space: nowrap;
 	cursor: pointer;
 	pointer-events: auto;
-	transition: top 0.55s var(--ease);
+	transition:
+		top 0.55s var(--ease),
+		left 0.55s var(--ease);
+}
+/* the tab is also the handle for dragging its sheet around (mouse/pen) */
+@media (min-width: 640px) and (min-height: 520px) and (pointer: fine) {
+	.stack__tab {
+		cursor: grab;
+		user-select: none;
+		touch-action: none;
+	}
+}
+.stack__tab[data-lifted] {
+	cursor: grabbing;
+	transition: none;
 }
 .stack__tab:hover,
 .stack__tab[aria-selected='true'] {

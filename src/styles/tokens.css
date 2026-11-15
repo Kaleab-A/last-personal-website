@@ -34,3 +34,21 @@
 	--astro-code-token-punctuation: var(--muted);
 	--astro-code-token-link: var(--ink);
 }
+
+/*
+ * Inverted mode: a photographic negative, white lines on black. Follows the
+ * system setting unless the visitor picked one with the nav toggle, which sets
+ * <html data-theme="light|dark">.
+ */
+:root[data-theme='dark'] {
+	--ink: #fff;
+	--paper: #000;
+	color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme='light']) {
+		--ink: #fff;
+		--paper: #000;
+		color-scheme: dark;
+	}
+}

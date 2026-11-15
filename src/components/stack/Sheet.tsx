@@ -7,11 +7,20 @@ export interface SheetMeta {
 	href?: string;
 }
 
+export interface Offset {
+	x: number;
+	y: number;
+}
+
 interface Props {
 	meta: SheetMeta;
 	index: number;
 	/** 0 = front of the pile. */
 	depth: number;
+	/** How far this sheet has been dragged (by its tab) from its place in the stack. */
+	offset: Offset;
+	/** True while its tab is being dragged. */
+	lifted: boolean;
 	onActivate: (index: number) => void;
 	/** Phone deck only: +1 = swiped to the next page, -1 = previous. */
 	onSwipe: (direction: 1 | -1) => void;
@@ -22,7 +31,7 @@ interface Props {
 const SWIPE_THRESHOLD = 70;
 const DECK_QUERY = '(max-width: 639px), (max-height: 519px)';
 
-export default function Sheet({ meta, index, depth, onActivate, onSwipe, children }: Props) {
+export default function Sheet({ meta, index, depth, offset, lifted, onActivate, onSwipe, children }: Props) {
 	const isFront = depth === 0;
 	const [dragX, setDragX] = useState(0);
 	const start = useRef<{ x: number; y: number; id: number; horizontal?: boolean } | null>(null);
@@ -53,6 +62,8 @@ export default function Sheet({ meta, index, depth, onActivate, onSwipe, childre
 		'--o': depth,
 		'--i': index,
 		'--drag': `${dragX}px`,
+		'--x': `${offset.x}px`,
+		'--y': `${offset.y}px`,
 	} as CSSProperties;
 
 	return (
@@ -63,6 +74,7 @@ export default function Sheet({ meta, index, depth, onActivate, onSwipe, childre
 			aria-labelledby={`tab-${meta.id}`}
 			data-front={isFront || undefined}
 			data-dragging={dragX !== 0 || undefined}
+			data-lifted={lifted || undefined}
 			style={style}
 			onClick={isFront ? undefined : () => onActivate(index)}
 			onPointerDown={onPointerDown}
