@@ -12,10 +12,13 @@ on:
 permissions:
   contents: write
 
-# One deploy at a time (shared with cleanup-preview.yml) so pushes never race.
+# One queue per branch: a newer push to the same branch replaces an older run.
+# Different branches deploy in parallel. (A single shared group would make
+# GitHub cancel all but one waiting run when several branches are pushed at
+# once.) Pushes to gh-pages can still race, so the publish step retries.
 concurrency:
-  group: gh-pages
-  cancel-in-progress: false
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -62,23 +65,34 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git clone --depth 1 --branch gh-pages \
-            "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" pages
-          if [ "$DEST" = "." ]; then
-            # Live site: replace everything except the branch previews.
-            find pages -mindepth 1 -maxdepth 1 ! -name .git ! -name preview -exec rm -rf {} +
-            cp -R dist/. pages/
-          else
-            rm -rf "pages/$DEST"
-            mkdir -p "pages/$DEST"
-            cp -R dist/. "pages/$DEST/"
-          fi
-          # Without this GitHub Pages runs Jekyll, which hides the _astro/ folder.
-          touch pages/.nojekyll
-          cd pages
-          git add -A
-          git commit -m "Deploy ${GITHUB_REF_NAME} @ ${GITHUB_SHA::7}" || { echo "Nothing changed"; exit 0; }
-          git push
+          publish() {
+            rm -rf pages
+            git clone --depth 1 --branch gh-pages \
+              "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" pages || return 1
+            if [ "$DEST" = "." ]; then
+              # Live site: replace everything except the branch previews.
+              find pages -mindepth 1 -maxdepth 1 ! -name .git ! -name preview -exec rm -rf {} +
+              cp -R dist/. pages/
+            else
+              rm -rf "pages/$DEST"
+              mkdir -p "pages/$DEST"
+              cp -R dist/. "pages/$DEST/"
+            fi
+            # Without this GitHub Pages runs Jekyll, which hides the _astro/ folder.
+            touch pages/.nojekyll
+            git -C pages add -A
+            git -C pages commit -qm "Deploy ${GITHUB_REF_NAME} @ ${GITHUB_SHA::7}" || { echo "Nothing changed"; return 0; }
+            git -C pages push
+          }
+          # Another branch may push to gh-pages between our clone and push.
+          # Each branch owns its own folder, so starting over from a fresh
+          # clone always works; just try again.
+          for attempt in $(seq 1 10); do
+            publish && exit 0
+            echo "Push rejected (attempt $attempt); retrying from a fresh clone"
+            sleep $((attempt * 3 + RANDOM % 5))  # back off, with jitter so retries spread out
+          done
+          exit 1
 
       - name: Summary
         run: echo "Deployed to ${{ steps.target.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"
