@@ -1,0 +1,84 @@
+# Builds every pushed branch and publishes it to the gh-pages branch:
+#   main            → https://kaleab-a.github.io/last-personal-website/
+#   any other branch → https://kaleab-a.github.io/last-personal-website/preview/<branch>/
+# ("/" in branch names becomes "-", so feat/folder-tabs → preview/feat-folder-tabs/)
+name: Deploy
+
+on:
+  push:
+    branches: ['**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# One deploy at a time (shared with cleanup-preview.yml) so pushes never race.
+concurrency:
+  group: gh-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Work out where this branch goes
+        id: target
+        run: |
+          BRANCH="${GITHUB_REF_NAME}"
+          SLUG=$(echo "$BRANCH" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9]+#-#g; s#^-+|-+$##g')
+          REPO="${GITHUB_REPOSITORY#*/}"
+          if [ "$BRANCH" = "main" ]; then
+            echo "base=/$REPO/" >> "$GITHUB_OUTPUT"
+            echo "dest=." >> "$GITHUB_OUTPUT"
+            echo "preview=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "base=/$REPO/preview/$SLUG/" >> "$GITHUB_OUTPUT"
+            echo "dest=preview/$SLUG" >> "$GITHUB_OUTPUT"
+            echo "preview=true" >> "$GITHUB_OUTPUT"
+          fi
+          echo "url=https://${GITHUB_REPOSITORY_OWNER,,}.github.io/$REPO/$([ "$BRANCH" = main ] || echo "preview/$SLUG/")" >> "$GITHUB_OUTPUT"
+
+      - run: npm ci
+      - run: npm test
+
+      - name: Build
+        run: npm run build
+        env:
+          BASE_PATH: ${{ steps.target.outputs.base }}
+          PUBLIC_PREVIEW: ${{ steps.target.outputs.preview }}
+          PUBLIC_BRANCH: ${{ github.ref_name }}
+
+      - name: Publish to gh-pages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEST: ${{ steps.target.outputs.dest }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git clone --depth 1 --branch gh-pages \
+            "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" pages
+          if [ "$DEST" = "." ]; then
+            # Live site: replace everything except the branch previews.
+            find pages -mindepth 1 -maxdepth 1 ! -name .git ! -name preview -exec rm -rf {} +
+            cp -R dist/. pages/
+          else
+            rm -rf "pages/$DEST"
+            mkdir -p "pages/$DEST"
+            cp -R dist/. "pages/$DEST/"
+          fi
+          # Without this GitHub Pages runs Jekyll, which hides the _astro/ folder.
+          touch pages/.nojekyll
+          cd pages
+          git add -A
+          git commit -m "Deploy ${GITHUB_REF_NAME} @ ${GITHUB_SHA::7}" || { echo "Nothing changed"; exit 0; }
+          git push
+
+      - name: Summary
+        run: echo "Deployed to ${{ steps.target.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"
