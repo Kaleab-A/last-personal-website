@@ -1,0 +1,44 @@
+---
+title: "Playground: three interactive figures"
+date: 2026-11-14
+summary: Gradient descent you can drag, circles that draw waves, and a neural network learning live. A demo of the figures posts can use.
+tags: [meta, math, ml]
+draft: true
+---
+
+import GradientDescent from '../../components/widgets/GradientDescent';
+import Fourier from '../../components/widgets/Fourier';
+import TinyNet from '../../components/widgets/TinyNet';
+
+{/* draft: true keeps this off the live site. Delete it, or keep it as a
+    reference for how to drop a figure into a post. */}
+
+Posts can include small interactive figures. Each one is a React component
+that loads only when you scroll to it. Import it at the top of the `.mdx` file
+and use it with `client:visible`.
+
+## Gradient descent
+
+Gradient descent repeats one update, $x_{t+1} = x_t - \eta \nabla f(x_t)$. On a
+quadratic bowl $f(x) = \tfrac12 x^\top A x$ the whole story is in the
+eigenvalues of $A$. This bowl has $\lambda = 1$ and $\lambda = 8$, so anything
+past $\eta = 2/8$ blows up, and anything past $1/8$ overshoots the steep
+direction on every step.
+
+<GradientDescent client:visible caption="Drag the start point and slide η past 0.125, then past 0.25." />
+
+## Fourier series
+
+Any reasonable periodic function is a sum of sines. Each sine is a circle
+spinning at a whole-number speed; stack the circles tip to tail and the last tip
+traces the sum.
+
+<Fourier client:visible caption="More circles, sharper corners. The overshoot at each jump never goes away (the Gibbs phenomenon)." />
+
+## A tiny neural network
+
+Two inputs, a handful of $\tanh$ units, one sigmoid output, trained with plain
+gradient descent on cross-entropy. The shading is the network's confidence that
+a point belongs to the filled class.
+
+<TinyNet client:visible caption="With one hidden unit the boundary has to be a line. Give it three or four and it can bend around the circle." />

@@ -1,0 +1,142 @@
+/* Interactive figures: black lines on paper, like everything else. */
+.post {
+	counter-reset: figure;
+}
+
+.widget {
+	counter-increment: figure;
+	margin: 2rem 0;
+	border: var(--line);
+	box-shadow: var(--shadow);
+	background: var(--paper);
+	color: var(--ink);
+	font-family: var(--mono);
+	font-size: 0.78rem;
+}
+.widget__stage {
+	border-bottom: var(--line);
+}
+.widget__stage svg {
+	display: block;
+	width: 100%;
+	height: auto;
+	user-select: none;
+}
+
+.widget__controls {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.6rem 1.4rem;
+	padding: 0.7rem 1rem;
+}
+.widget__reset {
+	margin-left: auto;
+}
+.widget__slider {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+.widget__slider output {
+	min-width: 3.5ch;
+	font-variant-numeric: tabular-nums;
+}
+.widget input[type='range'] {
+	appearance: none;
+	width: 8rem;
+	height: 1rem;
+	margin: 0;
+	background:
+		linear-gradient(var(--ink), var(--ink)) 0 50% / var(--pct, 0%) 2px no-repeat,
+		linear-gradient(var(--faint), var(--faint)) 0 50% / 100% 2px no-repeat;
+	cursor: pointer;
+}
+.widget input[type='range']::-webkit-slider-thumb {
+	appearance: none;
+	width: 10px;
+	height: 14px;
+	background: var(--paper);
+	border: var(--line);
+}
+.widget input[type='range']::-moz-range-thumb {
+	width: 8px;
+	height: 12px;
+	background: var(--paper);
+	border: var(--line);
+	border-radius: 0;
+}
+.widget select {
+	font: inherit;
+	color: var(--ink);
+	background: var(--paper);
+	border: var(--line);
+	padding: 0.15rem 0.3rem;
+	border-radius: 0;
+}
+
+.widget__readout {
+	margin: 0;
+	padding: 0.5rem 1rem;
+	border-top: 1px dashed var(--ink);
+	font-variant-numeric: tabular-nums;
+}
+.widget__caption {
+	padding: 0.6rem 1rem 0.7rem;
+	border-top: var(--line);
+	font-family: var(--serif);
+	font-size: 0.95rem;
+	line-height: 1.45;
+}
+.widget__caption::before {
+	content: 'Figure ' counter(figure) '. ';
+	font-family: var(--mono);
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+}
+
+/* SVG ink: classes rather than attributes so they follow --ink/--paper */
+.w-line {
+	fill: none;
+	stroke: var(--ink);
+	stroke-width: 1.5;
+}
+.w-thin {
+	fill: none;
+	stroke: var(--ink);
+	stroke-width: 1;
+}
+.w-faint {
+	fill: none;
+	stroke: var(--ink);
+	stroke-opacity: 0.28;
+	stroke-width: 1;
+}
+.w-dot {
+	fill: var(--ink);
+}
+.w-hollow {
+	fill: var(--paper);
+	stroke: var(--ink);
+	stroke-width: 1.5;
+}
+.w-fill {
+	fill: var(--ink);
+	stroke: none;
+}
+.w-text {
+	fill: var(--ink);
+	font-family: var(--mono);
+	font-size: 11px;
+}
+.w-handle {
+	cursor: grab;
+	touch-action: none;
+}
+.w-handle:focus-visible {
+	outline: none;
+	stroke: var(--ink);
+	stroke-width: 3;
+	stroke-dasharray: 3 2;
+}

@@ -83,6 +83,21 @@ draft: true                 # flip to false to publish
   a photo, use `<img src="/photo.jpg" alt="..." data-no-invert />` in an `.mdx`
   post to keep it as is.
 
+## Interactive figures in posts
+
+`.mdx` posts can embed the widgets in `src/components/widgets/`. Import them at
+the top of the post and add `client:visible` so each loads when scrolled to.
+See `widgets-demo.mdx`.
+
+```mdx
+import GradientDescent from '../../components/widgets/GradientDescent';
+
+<GradientDescent client:visible caption="What the reader should try." />
+```
+
+Available: `GradientDescent`, `Fourier` (`shape="square|sawtooth|triangle"`),
+`TinyNet` (`dataset="circle|xor|moons"`). Figures are numbered automatically.
+
 ## Music: `public/` + `site.yaml`
 
 Drop audio files in `public/` and list them under `music:`. Give each track more
