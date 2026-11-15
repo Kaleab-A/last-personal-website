@@ -1,0 +1,36 @@
+/*
+ * Design tokens. The whole look is ink on paper: change --ink and --paper and
+ * everything follows (borders, shadows, hover inversions, code, math).
+ */
+:root {
+	--ink: #000;
+	--paper: #fff;
+	--muted: color-mix(in srgb, var(--ink) 62%, var(--paper));
+	--faint: color-mix(in srgb, var(--ink) 14%, var(--paper));
+	--grid-dot: color-mix(in srgb, var(--ink) 22%, transparent);
+
+	--line-w: 1.5px;
+	--line: var(--line-w) solid var(--ink);
+	--shadow: 4px 4px 0 var(--ink);
+	--shadow-lift: 7px 7px 0 var(--ink);
+
+	--serif: Georgia, 'Times New Roman', Times, serif;
+	--mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+
+	--measure: 68ch;
+	--gutter: clamp(1rem, 4vw, 2.5rem);
+	--ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+	/* Shiki "css-variables" theme: monochrome code. */
+	--astro-code-foreground: var(--ink);
+	--astro-code-background: var(--paper);
+	--astro-code-token-constant: var(--ink);
+	--astro-code-token-string: var(--muted);
+	--astro-code-token-comment: var(--muted);
+	--astro-code-token-keyword: var(--ink);
+	--astro-code-token-parameter: var(--ink);
+	--astro-code-token-function: var(--ink);
+	--astro-code-token-string-expression: var(--muted);
+	--astro-code-token-punctuation: var(--muted);
+	--astro-code-token-link: var(--ink);
+}

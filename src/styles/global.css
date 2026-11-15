@@ -1,0 +1,255 @@
+@import './tokens.css';
+
+/* ---------- base ---------- */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+}
+
+body {
+	margin: 0;
+	min-height: 100dvh;
+	display: flex;
+	flex-direction: column;
+	color: var(--ink);
+	background-color: var(--paper);
+	/* graph paper */
+	background-image: radial-gradient(var(--grid-dot) 0.8px, transparent 1px);
+	background-size: 22px 22px;
+	font-family: var(--serif);
+	font-size: 1.125rem;
+	line-height: 1.6;
+}
+
+main {
+	flex: 1;
+}
+
+img,
+svg,
+video {
+	max-width: 100%;
+	height: auto;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	line-height: 1.15;
+	margin: 1.6em 0 0.5em;
+	font-weight: normal;
+}
+h1 {
+	font-size: clamp(2.2rem, 5vw, 3.4rem);
+	margin-top: 0;
+}
+h2 {
+	font-size: 1.6rem;
+}
+h3 {
+	font-size: 1.25rem;
+}
+
+p,
+ul,
+ol,
+blockquote,
+pre,
+table,
+figure {
+	margin: 0 0 1em;
+}
+
+hr {
+	border: 0;
+	border-top: var(--line);
+	margin: 2rem 0;
+}
+
+/* ---------- links & buttons: underline, invert on hover ---------- */
+a {
+	color: inherit;
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.18em;
+}
+a:hover {
+	background: var(--ink);
+	color: var(--paper);
+	text-decoration: none;
+}
+
+:focus-visible {
+	outline: 2px dashed var(--ink);
+	outline-offset: 3px;
+}
+
+button {
+	font: inherit;
+	color: inherit;
+}
+
+.btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4em;
+	font-family: var(--mono);
+	font-size: 0.8rem;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	text-decoration: none;
+	padding: 0.35em 0.75em;
+	border: var(--line);
+	background: var(--paper);
+	color: var(--ink);
+	box-shadow: 2px 2px 0 var(--ink);
+	cursor: pointer;
+}
+.btn:hover,
+.btn[aria-pressed='true'] {
+	background: var(--ink);
+	color: var(--paper);
+}
+.btn:active {
+	translate: 2px 2px;
+	box-shadow: none;
+}
+
+/* ---------- small type helpers ---------- */
+.label {
+	font-family: var(--mono);
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+}
+.muted {
+	color: var(--muted);
+}
+.mono {
+	font-family: var(--mono);
+}
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+/* ---------- paper: a single sheet pulled from the stack ---------- */
+.paper {
+	position: relative;
+	background: var(--paper);
+	border: var(--line);
+	box-shadow: var(--shadow);
+	padding: clamp(1.25rem, 4vw, 3rem);
+}
+/* two ghost sheets peeking out behind, echoing the home page stack */
+.paper::before,
+.paper::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	border: var(--line);
+	background: var(--paper);
+	z-index: -1;
+}
+.paper::before {
+	translate: -9px -9px;
+}
+.paper::after {
+	translate: -18px -18px;
+	z-index: -2;
+}
+
+/* ---------- prose (Markdown) ---------- */
+.prose {
+	max-width: var(--measure);
+}
+.prose h2 {
+	border-bottom: var(--line);
+	padding-bottom: 0.2em;
+}
+.prose ul,
+.prose ol {
+	padding-left: 1.4em;
+}
+.prose li + li {
+	margin-top: 0.25em;
+}
+.prose blockquote {
+	margin-left: 0;
+	padding-left: 1rem;
+	border-left: 4px solid var(--ink);
+	font-style: italic;
+}
+.prose code {
+	font-family: var(--mono);
+	font-size: 0.85em;
+	border: 1px solid var(--faint);
+	padding: 0.05em 0.3em;
+}
+.prose pre {
+	border: var(--line);
+	padding: 1rem;
+	overflow-x: auto;
+	font-size: 0.9rem;
+	line-height: 1.5;
+}
+.prose pre code {
+	border: 0;
+	padding: 0;
+	font-size: inherit;
+}
+.prose img {
+	display: block;
+	border: var(--line);
+	margin: 1.5rem auto;
+}
+.prose table {
+	border-collapse: collapse;
+	width: 100%;
+	font-size: 0.95rem;
+}
+.prose th,
+.prose td {
+	border: 1px solid var(--ink);
+	padding: 0.4em 0.6em;
+	text-align: left;
+}
+.prose .katex-display {
+	overflow-x: auto;
+	overflow-y: hidden;
+	padding: 0.25rem 0;
+}
+.prose .footnotes {
+	margin-top: 3rem;
+	border-top: var(--line);
+	font-size: 0.95rem;
+}
+.prose .footnotes h2 {
+	font-size: 0.75rem;
+	font-family: var(--mono);
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}

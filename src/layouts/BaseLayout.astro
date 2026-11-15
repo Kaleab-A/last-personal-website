@@ -1,0 +1,115 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import '../styles/global.css';
+import '../styles/print.css';
+import SiteNav from '../components/ui/SiteNav.astro';
+import SiteFooter from '../components/ui/SiteFooter.astro';
+import MusicWidget from '../components/music/MusicWidget';
+import { getSite } from '../lib/content';
+import { url } from '../lib/url';
+
+interface Props {
+	/** Page title; the site name is appended. Omit on the home page. */
+	title?: string;
+	description?: string;
+	/** Social preview image, a file in public/. */
+	image?: string;
+	type?: 'website' | 'article';
+	/** "home" lets the page stack fill the screen; "page" is a centred sheet. */
+	variant?: 'home' | 'page';
+}
+
+const { title, description, image, type = 'website', variant = 'page' } = Astro.props;
+const site = await getSite();
+
+const fullTitle = title ? `${title} · ${site.name}` : site.name;
+const desc = description ?? site.description;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(url(image ?? site.portrait), Astro.site);
+
+const preview = import.meta.env.PUBLIC_PREVIEW === 'true';
+const branch = import.meta.env.PUBLIC_BRANCH;
+const tracks = site.music.map((t) => ({ title: t.title, sources: t.sources.map((s) => url(s)) }));
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{fullTitle}</title>
+		<meta name="description" content={desc} />
+		<link rel="canonical" href={canonical} />
+		{preview && <meta name="robots" content="noindex, nofollow" />}
+		<link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+		<link rel="alternate" type="application/rss+xml" title={`${site.shortName}'s writing`} href={url('/rss.xml')} />
+		<link rel="sitemap" href={url('/sitemap-index.xml')} />
+		<meta name="theme-color" content="#ffffff" />
+		<meta property="og:type" content={type} />
+		<meta property="og:title" content={title ?? site.name} />
+		<meta property="og:description" content={desc} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={ogImage} />
+		<meta name="twitter:card" content="summary" />
+		<slot name="head" />
+		<ClientRouter />
+	</head>
+	<body class={`layout-${variant}`}>
+		<a class="skip-link" href="#main">Skip to content</a>
+		{preview && <div class="preview-banner">preview · {branch ?? 'branch build'} · not the live site</div>}
+		<SiteNav />
+		<main id="main" class={variant}>
+			<slot />
+		</main>
+		<SiteFooter />
+		{tracks.length > 0 && <MusicWidget client:idle transition:persist="radio" tracks={tracks} />}
+	</body>
+</html>
+
+<style is:global>
+	.skip-link {
+		position: absolute;
+		left: 0.75rem;
+		top: -3rem;
+		z-index: 100;
+		padding: 0.4rem 0.7rem;
+		background: var(--ink);
+		color: var(--paper);
+		font-family: var(--mono);
+		font-size: 0.85rem;
+	}
+	.skip-link:focus {
+		top: 0.75rem;
+	}
+
+	.preview-banner {
+		padding: 0.3rem var(--gutter);
+		background: var(--ink);
+		color: var(--paper);
+		font-family: var(--mono);
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+	}
+
+	/* home: the stack fills whatever height is left */
+	main.home {
+		display: flex;
+		flex-direction: column;
+		padding: clamp(1rem, 3vh, 2rem) 0 clamp(4.5rem, 9vh, 6rem);
+	}
+
+	/* every other page: one sheet, centred */
+	main.page {
+		width: min(100% - 2 * var(--gutter), 54rem);
+		margin-inline: auto;
+		padding: clamp(2rem, 5vh, 3.5rem) 0 clamp(4rem, 8vh, 6rem);
+	}
+	@media (max-width: 639px) {
+		main.page {
+			/* leave room for the ghost sheets peeking out on the left */
+			width: calc(100% - 1.5rem - 18px);
+			margin-left: calc(0.75rem + 18px);
+		}
+	}
+</style>

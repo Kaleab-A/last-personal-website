@@ -1,0 +1,91 @@
+---
+import 'katex/dist/katex.min.css';
+import { render } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import type { Post } from '../lib/content';
+import { isoDate, readingMinutes } from '../lib/dates';
+import { url } from '../lib/url';
+
+interface Props {
+	post: Post;
+	newer?: Post;
+	older?: Post;
+}
+
+const { post, newer, older } = Astro.props;
+const { data } = post;
+const { Content } = await render(post);
+const meta = [
+	data.updated && `updated ${isoDate(data.updated)}`,
+	`${readingMinutes(post.body)} min read`,
+	data.tags.length > 0 && data.tags.map((t) => `#${t}`).join(' '),
+	data.draft && 'draft',
+].filter(Boolean);
+---
+
+<BaseLayout title={data.title} description={data.summary} type="article">
+	<article class="paper post">
+		<header class="post__head">
+			<p class="label"><a href={url('/writing')}>← all writing</a></p>
+			<h1>{data.title}</h1>
+			<p class="label muted">
+				<time datetime={data.date.toISOString()}>{isoDate(data.date)}</time>
+				{meta.map((m) => ` · ${m}`).join('')}
+			</p>
+		</header>
+
+		<div class="prose">
+			<Content />
+		</div>
+
+		{
+			(newer || older) && (
+				<nav class="post__nav" aria-label="More writing">
+					{older ? (
+						<a href={url(`/writing/${older.id}`)}>
+							<span class="label">← older</span>
+							{older.data.title}
+						</a>
+					) : (
+						<span />
+					)}
+					{newer && (
+						<a href={url(`/writing/${newer.id}`)} class="newer">
+							<span class="label">newer →</span>
+							{newer.data.title}
+						</a>
+					)}
+				</nav>
+			)
+		}
+	</article>
+</BaseLayout>
+
+<style>
+	.post__head {
+		margin-bottom: 2rem;
+		padding-bottom: 1rem;
+		border-bottom: var(--line);
+	}
+	.post__head h1 {
+		margin: 0.5rem 0;
+	}
+	.post__nav {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
+		margin-top: 3rem;
+		padding-top: 1rem;
+		border-top: var(--line);
+	}
+	.post__nav a {
+		display: grid;
+		gap: 0.2rem;
+		padding: 0.5rem;
+		text-decoration: none;
+		border: 1px dashed var(--ink);
+	}
+	.post__nav .newer {
+		text-align: right;
+	}
+</style>

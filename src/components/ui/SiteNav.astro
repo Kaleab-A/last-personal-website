@@ -1,0 +1,85 @@
+---
+import { getSite } from '../../lib/content';
+import { isCurrent, url } from '../../lib/url';
+
+const site = await getSite();
+const path = Astro.url.pathname;
+const links = [
+	{ href: '/about', label: 'about' },
+	{ href: '/projects', label: 'projects' },
+	{ href: '/writing', label: 'writing' },
+	{ href: '/now', label: 'now' },
+	{ href: '/cv', label: 'cv' },
+];
+---
+
+<header class="site-nav">
+	<a class="brand" href={url('/')} aria-current={isCurrent(path, '/') ? 'page' : undefined}>
+		~/{site.shortName.toLowerCase()}
+	</a>
+	<nav aria-label="Main">
+		<ul>
+			{
+				links.map((link) => (
+					<li>
+						<a href={url(link.href)} aria-current={isCurrent(path, link.href) ? 'page' : undefined}>
+							<span class="slash" aria-hidden="true">/</span>{link.label}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</nav>
+</header>
+
+<style>
+	.site-nav {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.25rem 1.5rem;
+		padding: 0.6rem var(--gutter);
+		background: var(--paper);
+		border-bottom: var(--line);
+		font-family: var(--mono);
+		font-size: 0.85rem;
+	}
+	.brand {
+		font-weight: bold;
+		text-decoration: none;
+	}
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.15rem 0.35rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	nav a {
+		display: inline-block;
+		padding: 0.1rem 0.4rem;
+		text-decoration: none;
+	}
+	.slash {
+		color: var(--muted);
+		margin-right: 0.1em;
+	}
+	a[aria-current='page'] {
+		background: var(--ink);
+		color: var(--paper);
+	}
+	a[aria-current='page'] .slash,
+	a:hover .slash {
+		color: inherit;
+	}
+	@media (max-width: 480px) {
+		.site-nav {
+			padding-inline: 0.75rem;
+		}
+		nav a {
+			padding-inline: 0.25rem;
+		}
+	}
+</style>

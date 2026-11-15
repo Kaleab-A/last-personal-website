@@ -1,0 +1,50 @@
+/* Printing (mainly /cv → "Save as PDF"): plain black on white, no chrome. */
+@media print {
+	@page {
+		margin: 1.6cm 1.8cm;
+	}
+	:root {
+		--shadow: none;
+	}
+	body {
+		background: none;
+		font-size: 10.5pt;
+		line-height: 1.4;
+	}
+	.no-print,
+	.site-nav,
+	.site-footer,
+	.radio,
+	.preview-banner {
+		display: none !important;
+	}
+	.paper {
+		border: 0;
+		box-shadow: none;
+		padding: 0;
+	}
+	.paper::before,
+	.paper::after {
+		display: none;
+	}
+	main {
+		padding: 0 !important;
+	}
+	a {
+		text-decoration: none;
+	}
+	.print-urls a[href^='http']::after {
+		content: ' (' attr(href) ')';
+		font-family: var(--mono);
+		font-size: 0.8em;
+		color: #444;
+	}
+	h2,
+	h3 {
+		break-after: avoid;
+	}
+	article,
+	li {
+		break-inside: avoid;
+	}
+}
