@@ -1,0 +1,158 @@
+/*
+ * The overlapping pages. Each sheet gets --o (depth, 0 = front) from React;
+ * everything else is CSS. Three layouts:
+ *   ≥1024px     wide stack, back sheets peek out up-left
+ *   640–1023px  same stack, tighter
+ *   <640px      a vertical pile: front sheet on top, the rest as header strips
+ */
+.stack {
+	--dx: clamp(12px, 1.7vw, 28px);
+	--dy: clamp(20px, 2.8vh, 30px);
+	--sheet-w: min(60rem, 74%);
+	--spread: calc((var(--n) - 1) / 2);
+	position: relative;
+	flex: 1;
+	min-height: 34rem;
+	margin: 0 var(--gutter);
+	isolation: isolate;
+}
+
+.sheet {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: var(--sheet-w);
+	height: min(46rem, calc(100% - (var(--n) - 1) * var(--dy) - 1rem));
+	/* centre the whole pile, then step each sheet up-left by its depth */
+	translate:
+		calc(-50% + (var(--spread) - var(--o)) * var(--dx))
+		calc(-50% + (var(--spread) - var(--o)) * var(--dy));
+	z-index: calc(var(--n) - var(--o));
+	display: flex;
+	flex-direction: column;
+	background: var(--paper);
+	border: var(--line);
+	box-shadow: var(--shadow);
+	transition:
+		translate 0.55s var(--ease),
+		transform 0.18s var(--ease),
+		box-shadow 0.18s var(--ease);
+}
+
+/* back sheets: the whole sheet is a click target, and lifts on hover */
+.sheet:not([data-front]) {
+	cursor: pointer;
+}
+.sheet:not([data-front]):hover {
+	transform: translate(-3px, -3px);
+	box-shadow: var(--shadow-lift);
+}
+.sheet:not([data-front]):hover .sheet__head {
+	background: var(--ink);
+	color: var(--paper);
+}
+
+/* a little "pulled out of the pile" wobble when a sheet comes to the front */
+.sheet[data-front] {
+	animation: sheet-pull 0.5s var(--ease);
+}
+@keyframes sheet-pull {
+	35% {
+		transform: translateY(-14px) rotate(-0.8deg);
+	}
+}
+
+.sheet__head {
+	flex: none;
+	display: flex;
+	align-items: baseline;
+	gap: 0.75rem;
+	min-height: 2.25rem;
+	padding: 0.35rem 0.9rem;
+	border-bottom: var(--line);
+	font-family: var(--mono);
+	font-size: 0.78rem;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+}
+.sheet__title {
+	margin: 0;
+	font-size: inherit;
+	font-weight: bold;
+	line-height: 1.3;
+}
+.sheet__title:focus {
+	outline: none;
+}
+.sheet__title:focus-visible {
+	outline: 2px dashed currentColor;
+	outline-offset: 2px;
+}
+.sheet__title button {
+	all: unset;
+	cursor: pointer;
+}
+.sheet__title button:focus-visible {
+	outline: 2px dashed currentColor;
+	outline-offset: 2px;
+}
+.sheet__open {
+	margin-left: auto;
+	white-space: nowrap;
+}
+
+.sheet__body {
+	flex: 1;
+	min-height: 0;
+	overflow: auto;
+	overscroll-behavior: contain;
+	padding: clamp(1.25rem, 3vw, 2.5rem);
+}
+.sheet:not([data-front]) .sheet__body {
+	overflow: hidden;
+}
+
+/* ---------- tablet ---------- */
+@media (max-width: 1023px) {
+	.stack {
+		--sheet-w: 86%;
+		--dx: 10px;
+		--dy: 21px;
+	}
+}
+
+/* ---------- phone (and short landscape screens): a pile of cards ---------- */
+@media (max-width: 639px), (max-height: 519px) {
+	.stack {
+		display: flex;
+		flex-direction: column;
+		min-height: 0;
+		margin: 0 0.75rem;
+		scroll-margin-top: 0.75rem;
+	}
+	.sheet {
+		position: relative;
+		left: auto;
+		top: auto;
+		width: auto;
+		height: auto;
+		translate: none;
+		order: var(--o);
+		margin-top: -0.4rem;
+		rotate: calc(var(--tilt) * 1deg);
+	}
+	.sheet[data-front] {
+		margin: 0 0 0.9rem;
+		rotate: none;
+	}
+	.sheet:not([data-front]) .sheet__body {
+		display: none;
+	}
+	.sheet__head {
+		min-height: 2.75rem;
+		align-items: center;
+	}
+	.sheet__body {
+		overflow: visible;
+	}
+}

@@ -1,0 +1,115 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageStack, { type SheetMeta } from '../components/stack/PageStack';
+import ProjectCard from '../components/projects/ProjectCard';
+import PostList from '../components/writing/PostList.astro';
+import { getPage, getPosts, getProjects, getSite } from '../lib/content';
+import { isoDate } from '../lib/dates';
+import { url } from '../lib/url';
+
+const site = await getSite();
+const about = await getPage('about');
+const now = await getPage('now');
+const { Content: About } = await render(about);
+const { Content: Now } = await render(now);
+const projects = (await getProjects()).filter((p) => p.featured).slice(0, 4);
+const posts = (await getPosts()).slice(0, 4);
+
+// Front to back. Each id matches a slot below.
+const sheets: SheetMeta[] = [
+	{ id: 'intro', label: 'Intro' },
+	{ id: 'about', label: 'About me', href: url('/about') },
+	{ id: 'projects', label: 'Fun projects!!', href: url('/projects') },
+	{ id: 'writing', label: 'Writing', href: url('/writing') },
+	{ id: 'now', label: 'Now', href: url('/now') },
+];
+---
+
+<BaseLayout variant="home">
+	<PageStack client:load sheets={sheets}>
+		<div slot="intro" class="intro">
+			<h1>{site.greeting}</h1>
+			<img
+				class="intro__portrait"
+				src={url(site.portrait)}
+				alt={`Pencil sketch of ${site.shortName}`}
+				width="451"
+				height="553"
+			/>
+			<p class="intro__tagline">{site.tagline}</p>
+			<p class="intro__hint muted">{site.intro}</p>
+			<p class="intro__links">
+				<a class="btn" href={url('/cv')}>cv</a>
+				{site.socials.map((s) => <a class="btn" href={s.url}>{s.label}</a>)}
+				{site.email && <a class="btn" href={`mailto:${site.email}`}>email</a>}
+			</p>
+			<p class="intro__tip label muted">↖ tap the pages behind this one to flip through</p>
+		</div>
+
+		<div slot="about" class="prose">
+			<About />
+		</div>
+
+		<div slot="projects">
+			<p class="muted sheet-lede">A few favourites. The <a href={url('/projects')}>projects page</a> has all of them, with a skill filter.</p>
+			<div class="project-grid">
+				{projects.map((p) => <ProjectCard project={p} />)}
+			</div>
+		</div>
+
+		<div slot="writing">
+			<p class="muted sheet-lede">Explainers on math and machine learning, written so you don't have to learn it the hard way.</p>
+			<PostList posts={posts} />
+			<p><a href={url('/writing')}>all writing →</a></p>
+		</div>
+
+		<div slot="now" class="prose">
+			{now.data.updated && <p class="label muted">updated {isoDate(now.data.updated)}</p>}
+			<Now />
+		</div>
+	</PageStack>
+</BaseLayout>
+
+<style>
+	.intro {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		min-height: 100%;
+		justify-content: center;
+	}
+	.intro h1 {
+		margin: 0 0 0.75rem;
+	}
+	.intro__portrait {
+		width: clamp(7rem, 20vh, 13rem);
+		margin: 0.5rem 0 1.25rem;
+	}
+	.intro__tagline {
+		font-size: 1.2rem;
+		max-width: 36ch;
+		margin-bottom: 0.4rem;
+	}
+	.intro__hint {
+		font-style: italic;
+	}
+	.intro__links {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.6rem;
+	}
+	.intro__tip {
+		margin: 0.5rem 0 0;
+	}
+	@media (max-width: 639px), (max-height: 519px) {
+		.intro__tip {
+			display: none;
+		}
+	}
+	.sheet-lede {
+		margin-top: 0;
+	}
+</style>
