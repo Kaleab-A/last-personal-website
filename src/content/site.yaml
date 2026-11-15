@@ -1,0 +1,34 @@
+# Site-wide settings. Edit freely — the build checks this file against
+# src/content.config.ts and will tell you if a field is missing or wrong.
+
+name: Kaleab Asfaw Azezew
+shortName: Kaleab
+description: Kaleab's corner of the internet — projects, writing on math & machine learning, and a CV.
+greeting: "Hey! It's Kaleab."
+tagline: CS + Math student. I like taking ideas that look scary and making them feel obvious. # TODO: make it yours
+intro: Hit play on the radio to set the mood while you stalk me.
+portrait: me_sketch.png
+
+# email: you@example.com   # TODO: uncomment to show an email link
+# resume: resume.pdf       # TODO: put a PDF in public/ and uncomment
+
+socials:
+  - label: GitHub
+    url: https://github.com/Kaleab-A
+  # - label: LinkedIn       # TODO
+  #   url: https://www.linkedin.com/in/your-handle
+
+# Shown on /cv. Group names and items are free text.
+skills:
+  - group: Languages
+    items: [Python, TypeScript, TODO]
+  - group: ML / Math
+    items: [TensorFlow, TODO]
+  - group: Tools
+    items: [React, Flask, Git, TODO]
+
+# The radio in the corner. Files live in public/. List more than one source
+# per track (e.g. .ogg and .mp3) for the widest browser support.
+music:
+  - title: Partridge Gets Lucky
+    sources: [partridgeGetsLucky.ogg]

@@ -1,0 +1,13 @@
+title: Sock Matching
+summary: >-
+  A machine-learning model that looks at photos of two socks and decides whether
+  they form a pair. A convolutional neural network trained in TensorFlow, served
+  as a REST API with Flask, with a React front end.
+skills: [Machine Learning, TensorFlow, Convolutional Neural Networks, Python, Flask, React]
+links:
+  github: https://github.com/Kaleab-A/socks-matching
+  # demo: https://...        # TODO: add a video or live demo link
+image: sockAI-1.jpg
+featured: true
+date: 2023-01-01 # TODO: real date
+status: done

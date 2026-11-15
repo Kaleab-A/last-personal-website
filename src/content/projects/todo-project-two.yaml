@@ -1,0 +1,14 @@
+# TODO: replace with a real project. `draft: true` hides it on the live site
+# (it still shows on branch previews so you can see the layout).
+title: "TODO: Project two"
+summary: >-
+  One or two sentences: what it does, why it's interesting, and what you
+  learned. Recruiters skim, so lead with the result.
+skills: [Python, TODO]
+links:
+  github: https://github.com/Kaleab-A
+image: me_sketch.png
+featured: true
+date: 2024-06-01
+status: in-progress
+draft: true
