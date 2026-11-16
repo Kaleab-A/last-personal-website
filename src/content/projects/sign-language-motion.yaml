@@ -7,6 +7,7 @@ details:
   - Bidirectional attention beat autoregressive decoding on this task.
   - Classifier-free guidance has to be built in during training.
   - Retrieval baselines were surprisingly hard to beat.
+logo: logos/kaggle.svg
 skills: [PyTorch, Transformers, RVQ-VAE, MaskGIT, Generative models]
 # links:
 #   github: https://github.com/Kaleab-A/...   # TODO: add if the code is public

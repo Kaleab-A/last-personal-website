@@ -1,0 +1,17 @@
+---
+import { url } from '../../lib/url';
+
+interface Props {
+	/** File in public/, e.g. "logos/dropbox.svg". */
+	src: string;
+}
+
+/**
+ * A small logo drawn in the current text colour (it's a CSS mask, not an
+ * image), so it stays black-on-white, flips with the invert toggle and
+ * follows hover colours. Decorative: the name always sits next to it.
+ */
+const { src } = Astro.props;
+---
+
+<span class="logo" aria-hidden="true" style={`--logo: url("${url(src)}")`}></span>

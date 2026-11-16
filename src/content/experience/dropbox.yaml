@@ -1,8 +1,10 @@
 kind: work
 org: Dropbox
 role: ML Foundations Intern
-# start: 2026-05   # TODO: YYYY-MM
-# end: 2026-08     # TODO: YYYY-MM (leave out if you're still there)
+periods:
+  - { start: 2025-05, end: 2025-08 }
+  - { start: 2026-05, end: 2026-08 }
+logo: logos/dropbox.svg
 bullets:
   - Built infrastructure for serving and evaluating language models.
   - >-

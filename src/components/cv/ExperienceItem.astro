@@ -1,20 +1,30 @@
 ---
 import type { Experience } from '../../lib/content';
-import { monthYear } from '../../lib/dates';
+import { dateRange } from '../../lib/dates';
+import Logo from '../ui/Logo.astro';
 
 interface Props {
 	entry: Experience;
 }
 const { data } = Astro.props.entry;
-// No start date: show no dates (or just the end date, e.g. an expected graduation).
-const dates = data.start ? `${monthYear(data.start)} – ${monthYear(data.end)}` : data.end ? monthYear(data.end) : null;
+// One range, or several (newest first) for a role held more than once.
+const periods = data.periods ?? [{ start: data.start, end: data.end }];
+const dates =
+	periods
+		.map((p) => dateRange(p.start, p.end))
+		.filter(Boolean)
+		.reverse()
+		.join(' · ') || null;
 ---
 
 <article class="xp">
 	<div class="xp__head">
 		<h3>
 			<strong>{data.role}</strong>,{' '}
-			{data.url ? <a href={data.url}>{data.org}</a> : data.org}
+			<span class="xp__org">
+				{data.logo && <Logo src={data.logo} />}
+				{data.url ? <a href={data.url}>{data.org}</a> : data.org}
+			</span>
 			{data.draft && <span class="label xp__draft">draft</span>}
 		</h3>
 		{dates && <p class="mono xp__dates">{dates}</p>}
@@ -45,6 +55,12 @@ const dates = data.start ? `${monthYear(data.start)} – ${monthYear(data.end)}`
 	h3 {
 		margin: 0;
 		font-size: 1.1rem;
+	}
+	.xp__org {
+		white-space: nowrap;
+	}
+	.xp__org :global(.logo) {
+		margin-right: 0.3em;
 	}
 	.xp__dates {
 		margin: 0;

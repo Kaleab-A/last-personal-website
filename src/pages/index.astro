@@ -8,6 +8,7 @@ import ResearchItem from '../components/research/ResearchItem.astro';
 import { getPage, getPosts, getProjects, getSite } from '../lib/content';
 import { isoDate } from '../lib/dates';
 import { url } from '../lib/url';
+import Logo from '../components/ui/Logo.astro';
 
 const site = await getSite();
 const about = await getPage('about');
@@ -41,10 +42,22 @@ const sheets: SheetMeta[] = [
 				height="553"
 			/>
 			<p class="intro__tagline">{site.tagline}</p>
+			{
+				site.affiliations.length > 0 && (
+					<p class="intro__affiliations mono">
+						{site.affiliations.map((a) => (
+							<span>
+								{a.logo && <Logo src={a.logo} />}
+								{a.url ? <a href={a.url}>{a.label}</a> : a.label}
+							</span>
+						))}
+					</p>
+				)
+			}
 			<p class="intro__hint muted">{site.intro}</p>
 			<p class="intro__links">
 				<a class="btn" href={url('/cv')}>cv</a>
-				{site.socials.map((s) => <a class="btn" href={s.url}>{s.label}</a>)}
+				{site.socials.map((s) => <a class="btn" href={s.url}>{s.icon && <Logo src={s.icon} />}{s.label}</a>)}
 				{site.email && <a class="btn" href={`mailto:${site.email}`}>email</a>}
 			</p>
 			<p class="intro__tip label muted">↑ pick a tab, or press 1–{sheets.length} · ? for keys</p>
@@ -95,20 +108,39 @@ const sheets: SheetMeta[] = [
 		flex-direction: column;
 		align-items: center;
 		text-align: center;
-		min-height: 100%;
-		justify-content: center;
+		height: 100%;
+		/* "safe": if it ever overflows, keep the top reachable */
+		justify-content: safe center;
 	}
 	.intro h1 {
 		margin: 0 0 0.75rem;
 	}
+	/* the portrait gives up space first, so the text and buttons always fit */
 	.intro__portrait {
-		width: clamp(7rem, 20vh, 13rem);
-		margin: 0.5rem 0 1.25rem;
+		flex: 0 1 auto;
+		height: clamp(9rem, 26vh, 16rem);
+		min-height: 5rem;
+		width: auto;
+		object-fit: contain;
+		margin: 0.25rem 0 1rem;
 	}
 	.intro__tagline {
 		font-size: 1.2rem;
 		max-width: 36ch;
 		margin-bottom: 0.4rem;
+	}
+	.intro__affiliations {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.3rem 1.4rem;
+		margin: 0.2rem 0 0.6rem;
+		font-size: 0.8rem;
+	}
+	.intro__affiliations span {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45em;
 	}
 	.intro__hint {
 		font-style: italic;
@@ -123,6 +155,36 @@ const sheets: SheetMeta[] = [
 		margin: 0.5rem 0 0;
 	}
 	@media (max-width: 639px), (max-height: 519px) {
+		.intro {
+			height: auto;
+		}
+		.intro__portrait {
+			height: auto;
+			width: clamp(7rem, 40vw, 11rem);
+		}
+		.intro__tip {
+			display: none;
+		}
+	}
+	/* short laptop screens: tighten everything so the buttons stay in view */
+	@media (max-height: 800px) and (min-width: 640px) {
+		:global(.sheet__body:has(> .intro)) {
+			padding-block: 1rem;
+		}
+		.intro h1 {
+			font-size: 2rem;
+			margin-bottom: 0.25rem;
+		}
+		.intro__portrait {
+			min-height: 4rem;
+			margin: 0 0 0.6rem;
+		}
+		.intro__tagline {
+			font-size: 1.05rem;
+		}
+		.intro__hint {
+			margin-bottom: 0.6rem;
+		}
 		.intro__tip {
 			display: none;
 		}

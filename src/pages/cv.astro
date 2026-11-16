@@ -4,6 +4,7 @@ import ExperienceItem from '../components/cv/ExperienceItem.astro';
 import ResearchItem from '../components/research/ResearchItem.astro';
 import { getExperience, getProjects, getSite } from '../lib/content';
 import { url } from '../lib/url';
+import Logo from '../components/ui/Logo.astro';
 
 const site = await getSite();
 const { work, education } = await getExperience();
@@ -18,7 +19,7 @@ const home = new URL(url('/'), Astro.site);
 			<h1>{site.name}</h1>
 			<p class="mono contact">
 				{site.email && <a href={`mailto:${site.email}`}>{site.email}</a>}
-				{site.socials.map((s) => <a href={s.url}>{s.label}</a>)}
+				{site.socials.map((s) => <a href={s.url}>{s.icon && <Logo src={s.icon} />} {s.label}</a>)}
 				<a href={home.href}>{home.host}{home.pathname.replace(/\/$/, '')}</a>
 			</p>
 			<p class="actions no-print">

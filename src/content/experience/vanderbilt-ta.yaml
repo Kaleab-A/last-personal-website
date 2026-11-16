@@ -1,6 +1,7 @@
 kind: work
 org: Vanderbilt University
 role: Teaching Assistant, Algorithms
-# start: 2025-08   # TODO: YYYY-MM you started
+start: 2024-08
+logo: logos/vanderbilt.png
 # bullets:
 #   - TODO: which courses, and what you do (sections, office hours, grading)

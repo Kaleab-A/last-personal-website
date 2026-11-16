@@ -53,14 +53,33 @@ draft: false
 kind: work                  # work | education
 org: Some Company
 role: Software Engineer
-start: 2026-06              # YYYY-MM; leave out to show no dates
+start: 2026-06              # YYYY-MM or just YYYY; leave out to show no dates
 end: 2027-08                # leave out for "Present"
+# periods:                  # instead of start/end, for a role held more than once
+#   - { start: 2025-05, end: 2025-08 }
+#   - { start: 2026-05, end: 2026-08 }
+logo: logos/dropbox.svg     # optional, a file in public/ (see Logos below)
 location: City, Country     # optional
 url: https://...            # optional
 bullets:
   - What changed because of your work.
 draft: false
 ```
+
+## Logos: `public/logos/`
+
+Logos are drawn in the text colour (as a CSS mask), so any black-on-transparent
+SVG or PNG works and automatically flips with the invert toggle. Use them as
+`logo:` on jobs, schools and projects, `icon:` on `socials`, and in
+`affiliations` in `site.yaml`.
+
+Where the current ones came from:
+- `dropbox.svg`, `github.svg`, `kaggle.svg`: [Simple Icons](https://simpleicons.org) (CC0). `kaggle.svg`'s viewBox is cropped to the wordmark.
+- `linkedin.svg`: [Bootstrap Icons](https://icons.getbootstrap.com) (MIT).
+- `vanderbilt.png`: the "V" cut from the university logo on Wikimedia Commons (public domain, trademarked).
+
+The marks are trademarks of their owners; they're used here only to name the
+organisations.
 
 ## Write a post: `src/content/writing/<slug>.mdx`
 

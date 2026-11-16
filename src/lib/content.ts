@@ -42,6 +42,7 @@ export interface ProjectView {
 	links: { label: string; href: string }[];
 	image?: string;
 	featured: boolean;
+	logo?: string;
 	status: 'done' | 'in-progress' | 'idea';
 	year?: number;
 	draft: boolean;
@@ -78,6 +79,7 @@ export async function getProjects(kind?: ProjectView['kind']): Promise<ProjectVi
 				links,
 				image: data.image ? url(data.image) : undefined,
 				featured: data.featured,
+				logo: data.logo ? url(data.logo) : undefined,
 				status: data.status,
 				year: data.date?.getUTCFullYear(),
 				draft: data.draft,
@@ -90,11 +92,16 @@ export type Experience = CollectionEntry<'experience'>;
 /** Newest first, split into work and education. */
 export async function getExperience() {
 	const entries = await getCollection('experience', visible);
-	const sorted = entries.sort(
-		(a, b) =>
-			(b.data.end ?? '9999').localeCompare(a.data.end ?? '9999') ||
-			(b.data.start ?? '9999').localeCompare(a.data.start ?? '9999'),
-	);
+	// The latest period counts; no end means ongoing, no start means "now".
+	const latest = ({ data }: Experience) => {
+		const periods = data.periods ?? [{ start: data.start, end: data.end }];
+		const last = periods.reduce((a, b) => ((b.start ?? '9999') > (a.start ?? '9999') ? b : a));
+		return { start: last.start ?? '9999', end: last.end ?? '9999' };
+	};
+	const sorted = entries.sort((a, b) => {
+		const [x, y] = [latest(a), latest(b)];
+		return y.end.localeCompare(x.end) || y.start.localeCompare(x.start);
+	});
 	return {
 		work: sorted.filter((e) => e.data.kind === 'work'),
 		education: sorted.filter((e) => e.data.kind === 'education'),

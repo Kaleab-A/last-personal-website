@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getPage, getSite } from '../lib/content';
 import { url } from '../lib/url';
+import Logo from '../components/ui/Logo.astro';
 
 const site = await getSite();
 const about = await getPage('about');
@@ -19,7 +20,7 @@ const { Content } = await render(about);
 		<hr />
 		<p class="label">elsewhere</p>
 		<p class="links">
-			{site.socials.map((s) => <a class="btn" href={s.url}>{s.label}</a>)}
+			{site.socials.map((s) => <a class="btn" href={s.url}>{s.icon && <Logo src={s.icon} />}{s.label}</a>)}
 			{site.email && <a class="btn" href={`mailto:${site.email}`}>email</a>}
 			<a class="btn" href={url('/cv')}>cv</a>
 		</p>

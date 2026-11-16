@@ -1,9 +1,10 @@
 kind: education
 org: Vanderbilt University
 role: Computer Science and Mathematics (double major)
-# start: 2023-08   # TODO: YYYY-MM you started
-# end: 2027-05     # TODO: YYYY-MM you graduate (with no start, only this is shown)
+start: "2023"
+end: "2027"
 location: Nashville, TN
+logo: logos/vanderbilt.png
 bullets:
   - "Graduate courses: Advanced Machine Learning (CS 6362), Statistical Deep Learning (CS 6363)"
   - "Computer science: Deep Learning, Algorithms, Operating Systems, Programming Languages"

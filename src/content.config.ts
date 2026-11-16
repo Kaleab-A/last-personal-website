@@ -7,9 +7,13 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
+/** A logo or icon: a file in public/, e.g. "logos/dropbox.svg". Drawn in the text colour. */
+const logo = z.string().optional();
+
 const link = z.object({
 	label: z.string(),
 	url: z.url(),
+	icon: logo,
 });
 
 /** src/content/site.yaml — name, intro text, links, music. */
@@ -28,6 +32,8 @@ const site = defineCollection({
 		socials: z.array(link).default([]),
 		/** Shown on /research, the home page and the CV. */
 		interests: z.array(z.string()).default([]),
+		/** The small "where I am" line under the tagline on the home page. */
+		affiliations: z.array(z.object({ label: z.string(), url: z.url().optional(), logo })).default([]),
 		skills: z
 			.array(z.object({ group: z.string(), items: z.array(z.string()) }))
 			.default([]),
@@ -74,6 +80,8 @@ const projects = defineCollection({
 			.default({}),
 		/** File in public/, e.g. "sockAI-1.jpg". */
 		image: z.string().optional(),
+		/** Small logo next to the title, e.g. "logos/kaggle.svg". */
+		logo,
 		featured: z.boolean().default(false),
 		/** Smaller comes first. Projects without one go after, newest first. */
 		order: z.number().optional(),
@@ -86,7 +94,7 @@ const projects = defineCollection({
 
 const yearMonth = z
 	.string()
-	.regex(/^\d{4}-(0[1-9]|1[0-2])$/, 'Use YYYY-MM, e.g. 2024-06');
+	.regex(/^\d{4}(-(0[1-9]|1[0-2]))?$/, 'Use YYYY-MM (e.g. 2024-06) or just YYYY');
 
 /** src/content/experience/*.yaml — one file per job or school. */
 const experience = defineCollection({
@@ -99,6 +107,10 @@ const experience = defineCollection({
 		start: yearMonth.optional(),
 		/** Leave out for "present". */
 		end: yearMonth.optional(),
+		/** Instead of start/end, for a role held more than once (e.g. two summers). */
+		periods: z.array(z.object({ start: yearMonth, end: yearMonth.optional() })).optional(),
+		/** Small logo next to the organisation, e.g. "logos/dropbox.svg". */
+		logo,
 		location: z.string().optional(),
 		url: z.url().optional(),
 		bullets: z.array(z.string()).default([]),

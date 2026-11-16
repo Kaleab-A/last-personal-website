@@ -1,4 +1,5 @@
 import type { ProjectView } from '../../lib/content';
+import Logo from '../ui/Logo';
 import './projects.css';
 
 const STATUS: Record<ProjectView['status'], string | null> = {
@@ -24,6 +25,11 @@ export default function ProjectCard({ project, full = false }: Props) {
 					<img className="project-card__img" src={project.image} alt="" loading="lazy" decoding="async" />
 				) : null}
 				<div className="project-card__body">
+					{project.logo ? (
+						<p className="project-card__brand">
+							<Logo src={project.logo} />
+						</p>
+					) : null}
 					<h3 className="project-card__title">{project.title}</h3>
 					{meta.length > 0 ? <p className="project-card__meta label">{meta.join(' · ')}</p> : null}
 					<p className="project-card__summary">{project.summary}</p>

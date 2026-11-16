@@ -12,11 +12,23 @@ portrait: me_sketch.png
 # email: you@example.com   # TODO: uncomment to show an email link
 # resume: resume.pdf       # TODO: put a PDF in public/ and uncomment
 
+# `icon` is optional: a file in public/ (see public/logos/).
 socials:
   - label: GitHub
     url: https://github.com/Kaleab-A
-  # - label: LinkedIn       # TODO
-  #   url: https://www.linkedin.com/in/your-handle
+    icon: logos/github.svg
+  - label: LinkedIn
+    url: https://www.linkedin.com/in/kaleab-azezew/
+    icon: logos/linkedin.svg
+
+# The small line under the tagline on the home page. `url` and `logo` are optional.
+affiliations:
+  - label: Vanderbilt University
+    url: https://www.vanderbilt.edu/
+    logo: logos/vanderbilt.png
+  - label: Dropbox
+    url: https://www.dropbox.com/
+    logo: logos/dropbox.svg
 
 # Shown on /research, the home page and the CV.
 interests:

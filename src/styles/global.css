@@ -144,6 +144,23 @@ button {
 	white-space: nowrap;
 }
 
+/* small logos and icons (components/ui/Logo): a mask filled with the text colour */
+.logo {
+	display: inline-block;
+	flex: none;
+	width: 1em;
+	height: 1em;
+	vertical-align: -0.12em;
+	background-color: currentColor;
+	-webkit-mask: var(--logo) center / contain no-repeat;
+	mask: var(--logo) center / contain no-repeat;
+	-webkit-print-color-adjust: exact;
+	print-color-adjust: exact;
+}
+.btn .logo {
+	margin-right: 0.45em;
+}
+
 /* ---------- paper: a single sheet pulled from the stack ---------- */
 .paper {
 	position: relative;
