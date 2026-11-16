@@ -4,6 +4,9 @@ Kaleab's personal site: a stack of overlapping paper pages, black lines on white
 
 **Live:** https://kaleab-a.github.io/last-personal-website/
 
+The first version (March 2024, Create React App) is kept on the `legacy2024`
+branch: https://kaleab-a.github.io/last-personal-website/preview/legacy2024/
+
 ## Develop
 
 Needs Node 22.23+ (see `.nvmrc`).
