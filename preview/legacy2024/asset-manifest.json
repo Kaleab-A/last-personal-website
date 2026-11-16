@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/last-personal-website/preview/legacy2024/static/css/main.768d1a41.css",
+    "main.js": "/last-personal-website/preview/legacy2024/static/js/main.56a95efe.js",
+    "static/js/453.91433ea7.chunk.js": "/last-personal-website/preview/legacy2024/static/js/453.91433ea7.chunk.js",
+    "index.html": "/last-personal-website/preview/legacy2024/index.html",
+    "main.768d1a41.css.map": "/last-personal-website/preview/legacy2024/static/css/main.768d1a41.css.map",
+    "main.56a95efe.js.map": "/last-personal-website/preview/legacy2024/static/js/main.56a95efe.js.map",
+    "453.91433ea7.chunk.js.map": "/last-personal-website/preview/legacy2024/static/js/453.91433ea7.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.768d1a41.css",
+    "static/js/main.56a95efe.js"
+  ]
+}
