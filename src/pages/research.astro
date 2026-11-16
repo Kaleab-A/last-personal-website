@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResearchItem from '../components/research/ResearchItem.astro';
+import { getProjects, getSite } from '../lib/content';
+import { url } from '../lib/url';
+
+const site = await getSite();
+const research = await getProjects('research');
+---
+
+<BaseLayout title="Research" description={`Research by ${site.name}: machine learning, mathematics and neuroscience.`}>
+	<article class="paper">
+		<h1>Research</h1>
+		<p>
+			I work where machine learning, mathematics and neuroscience meet. Long term, I want to do a PhD on the
+			mathematical foundations of machine learning.
+		</p>
+
+		{
+			site.interests.length > 0 && (
+				<section>
+					<h2 class="label">interests</h2>
+					<ul class="interests">
+						{site.interests.map((i) => (
+							<li>{i}</li>
+						))}
+					</ul>
+				</section>
+			)
+		}
+
+		<section>
+			<h2 class="label">projects</h2>
+			{research.length ? research.map((p) => <ResearchItem project={p} />) : <p class="muted">Coming soon.</p>}
+		</section>
+
+		<p class="muted">
+			Engineering and ML side projects are on the <a href={url('/projects')}>projects page</a>.
+		</p>
+	</article>
+</BaseLayout>
+
+<style>
+	section {
+		margin-top: 1.75rem;
+	}
+	h2.label {
+		margin-bottom: 0.6rem;
+	}
+	.interests {
+		padding-left: 1.2rem;
+	}
+	.interests li + li {
+		margin-top: 0.2rem;
+	}
+</style>

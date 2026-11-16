@@ -26,6 +26,8 @@ const site = defineCollection({
 		email: z.email().optional(),
 		resume: z.string().optional(),
 		socials: z.array(link).default([]),
+		/** Shown on /research, the home page and the CV. */
+		interests: z.array(z.string()).default([]),
 		skills: z
 			.array(z.object({ group: z.string(), items: z.array(z.string()) }))
 			.default([]),
@@ -50,12 +52,18 @@ const pages = defineCollection({
 	}),
 });
 
-/** src/content/projects/*.yaml — one file per project. */
+/** src/content/projects/*.yaml — one file per project or research project. */
 const projects = defineCollection({
 	loader: glob({ pattern: '*.{yaml,yml}', base: './src/content/projects' }),
 	schema: z.object({
+		/** "research" goes on /research, "project" on /projects. */
+		kind: z.enum(['research', 'project']).default('project'),
 		title: z.string(),
 		summary: z.string(),
+		/** Optional bullet points: methods, results, lessons. Shown on the full pages. */
+		details: z.array(z.string()).default([]),
+		/** A short note shown next to the title, e.g. "paper in progress". */
+		note: z.string().optional(),
 		skills: z.array(z.string()).default([]),
 		links: z
 			.object({
@@ -67,7 +75,10 @@ const projects = defineCollection({
 		/** File in public/, e.g. "sockAI-1.jpg". */
 		image: z.string().optional(),
 		featured: z.boolean().default(false),
-		date: z.coerce.date(),
+		/** Smaller comes first. Projects without one go after, newest first. */
+		order: z.number().optional(),
+		/** When it was done; the year is shown. Leave out if you'd rather not say. */
+		date: z.coerce.date().optional(),
 		status: z.enum(['done', 'in-progress', 'idea']).default('done'),
 		draft: z.boolean().default(false),
 	}),
@@ -84,7 +95,8 @@ const experience = defineCollection({
 		kind: z.enum(['work', 'education']),
 		org: z.string(),
 		role: z.string(),
-		start: yearMonth,
+		/** Leave out to show no dates at all. */
+		start: yearMonth.optional(),
 		/** Leave out for "present". */
 		end: yearMonth.optional(),
 		location: z.string().optional(),

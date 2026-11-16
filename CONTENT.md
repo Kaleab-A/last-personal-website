@@ -17,26 +17,32 @@ the live site and on previews.
 
 ## Site settings: `src/content/site.yaml`
 
-Name, greeting, tagline, social links, email, résumé PDF, the skills shown on
-`/cv`, and the radio's playlist. Comments in the file explain each field.
+Name, greeting, tagline, social links, email, résumé PDF, research interests
+(shown on `/research`, the home page and `/cv`), the skills shown on `/cv`, and
+the radio's playlist. Comments in the file explain each field.
 
 ## About and Now: `src/content/pages/about.md`, `now.md`
 
 Plain Markdown. Bump `updated:` in `now.md` whenever you change it.
 
-## Add a project: `src/content/projects/<anything>.yaml`
+## Add a project or research project: `src/content/projects/<anything>.yaml`
 
 ```yaml
+kind: project                            # project → /projects, research → /research
 title: Sock Matching
 summary: One or two sentences. Lead with what it does.
+details:                                 # optional bullets: methods, results, lessons
+  - Shown on /projects and /research, not on the home page.
+note: paper in progress                  # optional, shown next to the year
 skills: [Machine Learning, Python]       # become the filter chips on /projects
 links:                                   # all optional
   github: https://github.com/...
   demo: https://...
   writeup: /writing/some-post            # a post on this site
 image: sockAI-1.jpg                      # optional, a file in public/
-featured: true                           # shows on the home page and the CV
-date: 2024-03-01                         # used for sorting; the year is shown
+featured: true                           # projects: home page and CV; research: always shown
+order: 1                                 # optional; smaller comes first
+date: 2024-03-01                         # optional; used for sorting, the year is shown
 status: done                             # done | in-progress | idea
 draft: false
 ```
@@ -47,7 +53,7 @@ draft: false
 kind: work                  # work | education
 org: Some Company
 role: Software Engineer
-start: 2026-06              # YYYY-MM
+start: 2026-06              # YYYY-MM; leave out to show no dates
 end: 2027-08                # leave out for "Present"
 location: City, Country     # optional
 url: https://...            # optional

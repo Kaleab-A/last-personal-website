@@ -1,0 +1,11 @@
+kind: research
+title: Topological data analysis of brains and language models
+summary: >-
+  Using persistent homology to find structure in brain imaging and in the
+  features of a language model.
+details:
+  - fMRI data from the ADHD-200 and ABIDE datasets.
+  - Sparse autoencoder features from GPT-2, as a topological angle on interpretability.
+skills: [Persistent homology, Topological data analysis, fMRI, Interpretability, Python]
+featured: true
+order: 3

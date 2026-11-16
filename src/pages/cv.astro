@@ -1,12 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ExperienceItem from '../components/cv/ExperienceItem.astro';
+import ResearchItem from '../components/research/ResearchItem.astro';
 import { getExperience, getProjects, getSite } from '../lib/content';
 import { url } from '../lib/url';
 
 const site = await getSite();
 const { work, education } = await getExperience();
-const projects = (await getProjects()).filter((p) => p.featured);
+const research = await getProjects('research');
+const projects = (await getProjects('project')).filter((p) => p.featured);
 const home = new URL(url('/'), Astro.site);
 ---
 
@@ -25,14 +27,33 @@ const home = new URL(url('/'), Astro.site);
 			</p>
 		</header>
 
-		<section>
-			<h2 class="label cv__h">Experience</h2>
-			{work.length ? work.map((e) => <ExperienceItem entry={e} />) : <p class="muted">Coming soon.</p>}
-		</section>
+		{
+			site.interests.length > 0 && (
+				<p class="cv__interests">
+					<strong>Research interests:</strong> {site.interests.join('; ')}.
+				</p>
+			)
+		}
 
 		<section>
 			<h2 class="label cv__h">Education</h2>
 			{education.length ? education.map((e) => <ExperienceItem entry={e} />) : <p class="muted">Coming soon.</p>}
+		</section>
+
+		{
+			research.length > 0 && (
+				<section>
+					<h2 class="label cv__h">Research</h2>
+					{research.map((p) => (
+						<ResearchItem project={p} />
+					))}
+				</section>
+			)
+		}
+
+		<section>
+			<h2 class="label cv__h">Experience</h2>
+			{work.length ? work.map((e) => <ExperienceItem entry={e} />) : <p class="muted">Coming soon.</p>}
 		</section>
 
 		{
@@ -100,6 +121,13 @@ const home = new URL(url('/'), Astro.site);
 		padding-bottom: 0.2rem;
 		border-bottom: 1px solid var(--ink);
 		font-size: 0.8rem;
+	}
+	.cv__interests {
+		font-size: 1rem;
+	}
+	.cv :global(.research-item) {
+		border-top: 0;
+		padding: 0 0 1.1rem;
 	}
 	.cv__projects {
 		padding-left: 1.2rem;

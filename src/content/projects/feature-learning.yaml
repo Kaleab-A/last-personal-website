@@ -1,0 +1,20 @@
+kind: research
+title: Neural signatures of feature learning
+summary: >-
+  How monkeys learn which visual feature (color, pattern or shape) is rewarded,
+  and how they move from exploring to exploiting.
+details:
+  - >-
+    Trials are aligned to a “learning point” instead of by trial number: the
+    first trial where the monkey reaches 80% accuracy over the next 10 trials.
+  - >-
+    Data: 40 probes in the anterior cingulate cortex, 50 channels each. Each
+    probe gets its own PCA (5–10 components) and its own logistic regression,
+    and the results are combined across probes.
+  - >-
+    Also looks at credit assignment: how the previous trial’s outcome shapes
+    processing on the current one.
+skills: [Computational neuroscience, PCA, Logistic regression, Python, MATLAB]
+featured: true
+order: 2
+status: in-progress

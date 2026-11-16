@@ -1,0 +1,11 @@
+kind: education
+org: Vanderbilt University
+role: Computer Science and Mathematics (double major)
+# start: 2023-08   # TODO: YYYY-MM you started
+# end: 2027-05     # TODO: YYYY-MM you graduate (with no start, only this is shown)
+location: Nashville, TN
+bullets:
+  - "Graduate courses: Advanced Machine Learning (CS 6362), Statistical Deep Learning (CS 6363)"
+  - "Computer science: Deep Learning, Algorithms, Operating Systems, Programming Languages"
+  - "Mathematics: Advanced Linear Algebra, Topological Data Analysis, Applied Statistics, Linear Optimization (Math 4620), Ordinary Differential Equations (Math 2610)"
+  - Gave a team talk on principal component analysis through linear algebra.

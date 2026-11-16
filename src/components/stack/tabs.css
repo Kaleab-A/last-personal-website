@@ -173,6 +173,10 @@
 	.stack--tabs {
 		--sheet-w: 86cqw;
 	}
+	/* narrower tabs: drop the numbers so the labels fit */
+	.stack__tab-num {
+		display: none;
+	}
 }
 
 /* ---------- phone: a deck with a scrolling tab strip; swipe to flip ---------- */

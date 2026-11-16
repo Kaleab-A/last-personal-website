@@ -1,0 +1,45 @@
+---
+title: "Three things a sign-language generation competition taught me"
+date: 2026-11-15
+summary: Generating sign-language motion as discrete tokens, why MaskGIT beat my autoregressive transformer, and the baseline I couldn't beat.
+tags: [ml, generative-models]
+draft: true
+---
+
+{/* An outline from your notes. Fill in each section, then delete `draft: true`.
+    It stays hidden on the live site until then, but shows on branch previews
+    and in `npm run dev`. Once it's live, link it from
+    src/content/projects/sign-language-motion.yaml (links.writeup). */}
+
+TODO: one paragraph on the task. What goes in, what comes out, and how it's
+scored (R-Precision: does the generated motion retrieve the right text?).
+
+## The setup: motion as tokens
+
+TODO: why turn motion into discrete RVQ-VAE tokens at all? What does residual
+quantization buy you over a single codebook?
+
+## 1. Bidirectional attention beat autoregressive decoding
+
+TODO: the custom autoregressive transformer first, then MaskGIT. What changed,
+and why does predicting every token at once, then refining, suit motion?
+
+## 2. Classifier-free guidance has to be built in during training
+
+TODO: the condition-dropout trick, and what happened when it wasn't there. At
+sampling time the guided logits mix the conditional and unconditional ones:
+
+$$
+\ell = \ell_\varnothing + w\,(\ell_c - \ell_\varnothing)
+$$
+
+which only works if the model learned $\ell_\varnothing$ in the first place.
+
+## 3. Retrieval baselines were surprisingly hard to beat
+
+TODO: what the retrieval baseline was, how close it came to ~0.416, and what
+that says about the metric.
+
+## What I'd do next
+
+TODO.

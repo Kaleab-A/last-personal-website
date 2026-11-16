@@ -6,6 +6,8 @@ interface Props {
 	entry: Experience;
 }
 const { data } = Astro.props.entry;
+// No start date: show no dates (or just the end date, e.g. an expected graduation).
+const dates = data.start ? `${monthYear(data.start)} – ${monthYear(data.end)}` : data.end ? monthYear(data.end) : null;
 ---
 
 <article class="xp">
@@ -15,7 +17,7 @@ const { data } = Astro.props.entry;
 			{data.url ? <a href={data.url}>{data.org}</a> : data.org}
 			{data.draft && <span class="label xp__draft">draft</span>}
 		</h3>
-		<p class="mono xp__dates">{monthYear(data.start)} – {monthYear(data.end)}</p>
+		{dates && <p class="mono xp__dates">{dates}</p>}
 	</div>
 	{data.location && <p class="muted xp__loc">{data.location}</p>}
 	{

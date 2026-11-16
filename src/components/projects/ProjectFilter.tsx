@@ -53,7 +53,7 @@ export default function ProjectFilter({ projects }: { projects: ProjectView[] })
 			</p>
 			<div className="project-grid">
 				{visible.map((project) => (
-					<ProjectCard key={project.id} project={project} />
+					<ProjectCard key={project.id} project={project} full />
 				))}
 			</div>
 		</div>

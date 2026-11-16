@@ -2,14 +2,18 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectFilter from '../components/projects/ProjectFilter';
 import { getProjects } from '../lib/content';
+import { url } from '../lib/url';
 
-const projects = await getProjects();
+const projects = await getProjects('project');
 ---
 
-<BaseLayout title="Projects" description="Things Kaleab has built: machine learning, math, and the web.">
+<BaseLayout title="Projects" description="Machine learning and engineering projects by Kaleab.">
 	<article class="paper">
 		<h1>Fun projects!!</h1>
-		<p>Pick one or more skills to filter. Nothing picked shows everything.</p>
+		<p>
+			Machine learning and engineering projects. Pick one or more skills to filter; nothing picked shows everything.
+			Research is on its <a href={url('/research')}>own page</a>.
+		</p>
 		<ProjectFilter client:load projects={projects} />
 	</article>
 </BaseLayout>

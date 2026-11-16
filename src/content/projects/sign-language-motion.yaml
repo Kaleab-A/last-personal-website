@@ -1,0 +1,15 @@
+title: Sign language motion generation (Kaggle)
+summary: >-
+  Generating sign-language motion as discrete RVQ-VAE tokens. I moved from a
+  custom autoregressive transformer to MaskGIT with classifier-free guidance;
+  best leaderboard score about 0.416 R-Precision.
+details:
+  - Bidirectional attention beat autoregressive decoding on this task.
+  - Classifier-free guidance has to be built in during training.
+  - Retrieval baselines were surprisingly hard to beat.
+skills: [PyTorch, Transformers, RVQ-VAE, MaskGIT, Generative models]
+# links:
+#   github: https://github.com/Kaleab-A/...   # TODO: add if the code is public
+#   writeup: /writing/sign-language-motion    # once that post is published
+featured: true
+order: 1

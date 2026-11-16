@@ -9,5 +9,6 @@ links:
   # demo: https://...        # TODO: add a video or live demo link
 image: sockAI-1.jpg
 featured: true
-date: 2023-01-01 # TODO: real date
+order: 3
+# date: 2023-06-01   # TODO: add when it was done, to show the year
 status: done

@@ -1,0 +1,8 @@
+title: Replicating “Understanding deep learning requires rethinking generalization”
+summary: >-
+  A PyTorch replication of Zhang et al. (2017): training a small Inception
+  network on CIFAR-10 with random or corrupted labels and pixels.
+skills: [PyTorch, Deep learning theory, Generalization, CIFAR-10]
+featured: true
+order: 2
+status: in-progress

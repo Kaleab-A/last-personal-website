@@ -1,0 +1,94 @@
+---
+import type { ProjectView } from '../../lib/content';
+
+interface Props {
+	project: ProjectView;
+	/** "full" shows details and skills (on /research); "short" is title + summary. */
+	size?: 'full' | 'short';
+}
+
+const { project: p, size = 'full' } = Astro.props;
+const meta = [p.year, p.note ?? (p.status === 'in-progress' ? 'in progress' : null), p.draft ? 'draft' : null].filter(
+	Boolean,
+);
+---
+
+<article class:list={['research-item', `research-item--${size}`]}>
+	<h3 class="research-item__title">
+		{p.links[0] ? <a href={p.links[0].href}>{p.title}</a> : p.title}
+	</h3>
+	{meta.length > 0 && <p class="label research-item__meta">{meta.join(' · ')}</p>}
+	<p class="research-item__summary">{p.summary}</p>
+	{
+		size === 'full' && p.details.length > 0 && (
+			<ul class="research-item__details">
+				{p.details.map((d) => (
+					<li>{d}</li>
+				))}
+			</ul>
+		)
+	}
+	{
+		size === 'full' && p.skills.length > 0 && (
+			<p class="mono research-item__skills">
+				<span class="visually-hidden">Methods and tools: </span>
+				{p.skills.join(' · ')}
+			</p>
+		)
+	}
+	{
+		size === 'full' && p.links.length > 0 && (
+			<p class="research-item__links">
+				{p.links.map((l) => (
+					<a href={l.href}>{l.label}</a>
+				))}
+			</p>
+		)
+	}
+</article>
+
+<style>
+	.research-item {
+		padding: 1.1rem 0;
+		border-top: 1px solid var(--ink);
+	}
+	.research-item--short {
+		padding: 0.75rem 0;
+	}
+	.research-item__title {
+		margin: 0;
+		font-size: 1.1rem;
+		font-weight: bold;
+		line-height: 1.3;
+	}
+	.research-item--short .research-item__title {
+		font-size: 1rem;
+	}
+	.research-item__meta {
+		margin: 0.25rem 0 0;
+	}
+	.research-item__summary {
+		margin: 0.4rem 0 0;
+		font-size: 1rem;
+	}
+	.research-item__details {
+		margin: 0.5rem 0 0;
+		padding-left: 1.2rem;
+		font-size: 1rem;
+	}
+	.research-item__details li + li {
+		margin-top: 0.3rem;
+	}
+	.research-item__skills {
+		margin: 0.6rem 0 0;
+		font-size: 0.78rem;
+		color: var(--muted);
+	}
+	.research-item__links {
+		display: flex;
+		gap: 1rem;
+		margin: 0.4rem 0 0;
+		font-family: var(--mono);
+		font-size: 0.85rem;
+	}
+</style>

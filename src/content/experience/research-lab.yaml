@@ -1,0 +1,10 @@
+# TODO: fill in the lab and dates, then delete `draft: true` to show it on the CV.
+# (The research projects themselves are already on the CV and /research.)
+kind: work
+org: "TODO: lab name, Vanderbilt University"
+role: Undergraduate Researcher
+# start: 2025-01
+# url: https://...   # lab website
+bullets:
+  - Neural decoding and feature-learning analyses of macaque multiunit recordings.
+draft: true

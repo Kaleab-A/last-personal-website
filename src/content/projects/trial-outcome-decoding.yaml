@@ -1,0 +1,21 @@
+kind: research
+title: Decoding trial outcomes from macaque neural activity
+note: paper in progress
+summary: >-
+  Predicting whether a trial was correct or an error from multiunit activity in
+  the anterior cingulate cortex, prefrontal cortex and caudate, recorded with
+  silicon probes while monkeys did a feature-learning task.
+details:
+  - >-
+    Main model: a custom logistic regression with an L2 penalty that keeps the
+    weights smooth across time and an L1 penalty that keeps them sparse, fit
+    with proximal gradient descent. The weights stay stable over the trial, and
+    each channel’s contribution is easy to interpret.
+  - "Baselines: QDA on PCA features, distance-weighted k-NN and Gaussian Naive Bayes."
+  - >-
+    Validation: nested cross-validation with StratifiedGroupKFold to avoid
+    leakage, scored with balanced accuracy.
+skills: [Neural decoding, Logistic regression, Proximal gradient descent, Sparse models, Nested cross-validation, Python, scikit-learn]
+featured: true
+order: 1
+status: in-progress

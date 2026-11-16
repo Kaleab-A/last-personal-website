@@ -33,25 +33,34 @@ export async function getPosts(): Promise<Post[]> {
 /** Serializable project shape, shared by static cards and the filter island. */
 export interface ProjectView {
 	id: string;
+	kind: 'research' | 'project';
 	title: string;
 	summary: string;
+	details: string[];
+	note?: string;
 	skills: string[];
 	links: { label: string; href: string }[];
 	image?: string;
 	featured: boolean;
 	status: 'done' | 'in-progress' | 'idea';
-	year: number;
+	year?: number;
 	draft: boolean;
 }
 
-/** Featured first, then newest first. */
-export async function getProjects(): Promise<ProjectView[]> {
-	const entries = await getCollection('projects', visible);
+/**
+ * Projects of one kind (or all): featured first, then by `order`, then newest
+ * first (undated ones count as newest), then by title.
+ */
+export async function getProjects(kind?: ProjectView['kind']): Promise<ProjectView[]> {
+	const entries = await getCollection('projects', (e) => visible(e) && (!kind || e.data.kind === kind));
+	const time = (d?: Date) => d?.getTime() ?? Infinity;
 	return entries
 		.sort(
 			(a, b) =>
 				Number(b.data.featured) - Number(a.data.featured) ||
-				b.data.date.getTime() - a.data.date.getTime(),
+				(a.data.order ?? Infinity) - (b.data.order ?? Infinity) ||
+				time(b.data.date) - time(a.data.date) ||
+				a.data.title.localeCompare(b.data.title),
 		)
 		.map(({ id, data }) => {
 			const links: ProjectView['links'] = [];
@@ -60,14 +69,17 @@ export async function getProjects(): Promise<ProjectView[]> {
 			if (data.links.writeup) links.push({ label: 'Write-up', href: url(data.links.writeup) });
 			return {
 				id,
+				kind: data.kind,
 				title: data.title,
 				summary: data.summary,
+				details: data.details,
+				note: data.note,
 				skills: data.skills,
 				links,
 				image: data.image ? url(data.image) : undefined,
 				featured: data.featured,
 				status: data.status,
-				year: data.date.getUTCFullYear(),
+				year: data.date?.getUTCFullYear(),
 				draft: data.draft,
 			};
 		});
@@ -81,7 +93,7 @@ export async function getExperience() {
 	const sorted = entries.sort(
 		(a, b) =>
 			(b.data.end ?? '9999').localeCompare(a.data.end ?? '9999') ||
-			b.data.start.localeCompare(a.data.start),
+			(b.data.start ?? '9999').localeCompare(a.data.start ?? '9999'),
 	);
 	return {
 		work: sorted.filter((e) => e.data.kind === 'work'),

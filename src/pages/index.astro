@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageStack, { type SheetMeta } from '../components/stack/PageStack';
 import ProjectCard from '../components/projects/ProjectCard';
 import PostList from '../components/writing/PostList.astro';
+import ResearchItem from '../components/research/ResearchItem.astro';
 import { getPage, getPosts, getProjects, getSite } from '../lib/content';
 import { isoDate } from '../lib/dates';
 import { url } from '../lib/url';
@@ -13,14 +14,16 @@ const about = await getPage('about');
 const now = await getPage('now');
 const { Content: About } = await render(about);
 const { Content: Now } = await render(now);
-const projects = (await getProjects()).filter((p) => p.featured).slice(0, 4);
+const research = await getProjects('research');
+const projects = (await getProjects('project')).filter((p) => p.featured).slice(0, 4);
 const posts = (await getPosts()).slice(0, 4);
 
 // Front to back. Each id matches a slot below.
 const sheets: SheetMeta[] = [
 	{ id: 'intro', label: 'Intro' },
 	{ id: 'about', label: 'About me', href: url('/about') },
-	{ id: 'projects', label: 'Fun projects!!', href: url('/projects') },
+	{ id: 'research', label: 'Research', href: url('/research') },
+	{ id: 'projects', label: 'Projects', href: url('/projects') },
 	{ id: 'writing', label: 'Writing', href: url('/writing') },
 	{ id: 'now', label: 'Now', href: url('/now') },
 ];
@@ -44,15 +47,30 @@ const sheets: SheetMeta[] = [
 				{site.socials.map((s) => <a class="btn" href={s.url}>{s.label}</a>)}
 				{site.email && <a class="btn" href={`mailto:${site.email}`}>email</a>}
 			</p>
-			<p class="intro__tip label muted">↑ pick a tab, or press 1–5 · ? for keys</p>
+			<p class="intro__tip label muted">↑ pick a tab, or press 1–{sheets.length} · ? for keys</p>
 		</div>
 
 		<div slot="about" class="prose">
 			<About />
 		</div>
 
+		<div slot="research">
+			<p class="muted sheet-lede">
+				Machine learning, mathematics and neuroscience. More detail on the <a href={url('/research')}>research page</a>.
+			</p>
+			{
+				site.interests.length > 0 && (
+					<p class="interest-line mono">
+						<span class="visually-hidden">Interests: </span>
+						{site.interests.join(' · ')}
+					</p>
+				)
+			}
+			{research.map((p) => <ResearchItem project={p} size="short" />)}
+		</div>
+
 		<div slot="projects">
-			<p class="muted sheet-lede">A few favourites. The <a href={url('/projects')}>projects page</a> has all of them, with a skill filter.</p>
+			<p class="muted sheet-lede">Fun projects!! A few favourites; the <a href={url('/projects')}>projects page</a> has all of them, with a skill filter.</p>
 			<div class="project-grid">
 				{projects.map((p) => <ProjectCard project={p} />)}
 			</div>
@@ -111,5 +129,9 @@ const sheets: SheetMeta[] = [
 	}
 	.sheet-lede {
 		margin-top: 0;
+	}
+	.interest-line {
+		font-size: 0.78rem;
+		line-height: 1.6;
 	}
 </style>

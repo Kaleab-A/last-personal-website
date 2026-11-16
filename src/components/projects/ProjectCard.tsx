@@ -7,9 +7,16 @@ const STATUS: Record<ProjectView['status'], string | null> = {
 	idea: 'idea',
 };
 
+interface Props {
+	project: ProjectView;
+	/** Also show the detail bullets (on /projects; the home page keeps cards short). */
+	full?: boolean;
+}
+
 /** One project. Rendered statically by Astro and inside the ProjectFilter island. */
-export default function ProjectCard({ project }: { project: ProjectView }) {
+export default function ProjectCard({ project, full = false }: Props) {
 	const status = STATUS[project.status];
+	const meta = [project.year, project.note ?? status, project.draft ? 'draft' : null].filter(Boolean);
 	return (
 		<article className="project-card">
 			<div className="project-card__inner">
@@ -18,12 +25,15 @@ export default function ProjectCard({ project }: { project: ProjectView }) {
 				) : null}
 				<div className="project-card__body">
 					<h3 className="project-card__title">{project.title}</h3>
-					<p className="project-card__meta label">
-						{project.year}
-						{status ? ` · ${status}` : ''}
-						{project.draft ? ' · draft' : ''}
-					</p>
+					{meta.length > 0 ? <p className="project-card__meta label">{meta.join(' · ')}</p> : null}
 					<p className="project-card__summary">{project.summary}</p>
+					{full && project.details.length > 0 ? (
+						<ul className="project-card__details">
+							{project.details.map((detail) => (
+								<li key={detail}>{detail}</li>
+							))}
+						</ul>
+					) : null}
 					{project.skills.length > 0 ? (
 						<ul className="project-card__skills" aria-label="Skills">
 							{project.skills.map((skill) => (

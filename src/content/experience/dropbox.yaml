@@ -1,0 +1,10 @@
+kind: work
+org: Dropbox
+role: ML Foundations Intern
+# start: 2026-05   # TODO: YYYY-MM
+# end: 2026-08     # TODO: YYYY-MM (leave out if you're still there)
+bullets:
+  - Built infrastructure for serving and evaluating language models.
+  - >-
+    Migrated the LLM gateway from LiteLLM to Bifrost, for faster inference and
+    better per-client tracking of rate limits and budgets.

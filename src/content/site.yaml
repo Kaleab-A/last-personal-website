@@ -3,9 +3,9 @@
 
 name: Kaleab Asfaw Azezew
 shortName: Kaleab
-description: Kaleab's corner of the internet — projects, writing on math & machine learning, and a CV.
+description: Kaleab Asfaw Azezew, a CS + Math senior at Vanderbilt working on machine learning, mathematics and neuroscience. Research, projects, writing and CV.
 greeting: "Hey! It's Kaleab."
-tagline: CS + Math student. I like taking ideas that look scary and making them feel obvious. # TODO: make it yours
+tagline: CS + Math senior at Vanderbilt. I work where machine learning, mathematics and neuroscience meet.
 intro: Hit play on the radio to set the mood while you stalk me.
 portrait: me_sketch.png
 
@@ -18,14 +18,28 @@ socials:
   # - label: LinkedIn       # TODO
   #   url: https://www.linkedin.com/in/your-handle
 
+# Shown on /research, the home page and the CV.
+interests:
+  - "Mathematical foundations of ML: linear algebra, probability, optimization"
+  - "Deep learning theory: generalization, generative models, geometric deep learning, state-space models"
+  - Topological data analysis (persistent homology)
+  - Computational neuroscience and neural decoding
+  - Game theory and economics
+
 # Shown on /cv. Group names and items are free text.
 skills:
   - group: Languages
-    items: [Python, TypeScript, TODO]
-  - group: ML / Math
-    items: [TensorFlow, TODO]
-  - group: Tools
-    items: [React, Flask, Git, TODO]
+    items: [Python, MATLAB, JavaScript / React, Prolog, LaTeX]
+  - group: ML & scientific
+    items: [PyTorch, scikit-learn, SciPy, Colab, Git]
+  - group: Methods
+    items:
+      - Regularized and sparse models, proximal optimization
+      - Nested cross-validation
+      - PCA and dimensionality reduction
+      - Mixed-effects models
+      - Persistent homology
+      - Transformers, VQ-VAEs, MaskGIT
 
 # The radio in the corner. Files live in public/. List more than one source
 # per track (e.g. .ogg and .mp3) for the widest browser support.
